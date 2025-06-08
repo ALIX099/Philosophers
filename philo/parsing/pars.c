@@ -76,7 +76,6 @@ char	*join_function(int ac, char **av)
 		{
 			tmp = str;
 			str = ft_strjoin(tmp, " ");
-
 			if (!str)
 				return (NULL);
 		}
@@ -110,7 +109,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[j])
 		str[i++] = s2[j++];
 	str[i] = '\0';
-    free(s1);
+	free(s1);
 	return (str);
 }
 

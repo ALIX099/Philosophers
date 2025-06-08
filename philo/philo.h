@@ -6,13 +6,14 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 03:07:34 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/07 04:25:38 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/08 02:01:20 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
+# include <limits.h>
 # include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -37,7 +38,7 @@ typedef struct s_philo
 
 typedef struct s_data
 {
-	int				number_of_philos;
+	int				n_philos;
 	long			time_to_die;
 	long			time_to_eat;
 	long			time_to_sleep;
@@ -54,5 +55,6 @@ char				**ft_split(char *str);
 void				free_split(char **split);
 int					ft_strlen(char *str);
 char				*ft_strdup(char *s1);
+int					ft_atoi(char *str);
 
 #endif
