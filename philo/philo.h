@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 03:07:34 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/08 02:01:20 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/09 06:33:08 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,7 @@ void				free_split(char **split);
 int					ft_strlen(char *str);
 char				*ft_strdup(char *s1);
 int					ft_atoi(char *str);
+int					init_data(t_data *data, int ac, char **av);
+void				destroy_forks(pthread_mutex_t *forks, int n);
 
 #endif

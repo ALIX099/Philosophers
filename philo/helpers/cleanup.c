@@ -1,41 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pars_two.c                                         :+:      :+:    :+:   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/07 04:22:28 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/09 06:39:20 by abouknan         ###   ########.fr       */
+/*   Created: 2025/06/09 06:32:38 by abouknan          #+#    #+#             */
+/*   Updated: 2025/06/09 06:33:00 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-int	ft_strlen(char *str)
+void	destroy_forks(pthread_mutex_t *forks, int n)
 {
 	int	i;
 
 	i = 0;
-	while (str[i] != '\0')
-		i++;
-	return (i);
-}
-
-char	*ft_strdup(char *s1)
-{
-	int		i;
-	char	*s2;
-
-	i = 0;
-	s2 = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
-	if (!s2)
-		return (NULL);
-	while (s1[i] != '\0')
+	while (i < n)
 	{
-		s2[i] = s1[i];
+		pthread_mutex_destroy(&forks[i]);
 		i++;
 	}
-	s2[i] = '\0';
-	return (s2);
+	free(forks);
 }

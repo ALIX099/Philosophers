@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 03:07:28 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/08 02:02:43 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/09 06:36:51 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,11 @@ static void	pars_function(int ac, char **av)
 
 int	main(int ac, char **av)
 {
-	t_data data;
+	t_data	data;
 
 	if (ac > 6 || ac < 5)
 		return (printf(RED "Error: invalid argument(s).\n" RESET), 1);
 	pars_function(ac, av);
-	init_argumets(data, ac, av);
+	if (!init_data(&data, ac, av))
+		return (printf(RED "Error: Initialization failed.\n" RESET), 1);
 }
