@@ -10,14 +10,15 @@ typedef struct s_philo
 {
 	int				id;
 	pthread_t		thread;
-	pthread_mutex_t	left_fork;
-	pthread_mutex_t	right_fork;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
 	struct s_data	*data;
 }					t_philo;
 
 typedef struct s_data
 {
 	int				n_philos;
+	int 			time_to_die;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_mutex;
 	t_philo			*philos;
@@ -62,12 +63,12 @@ void	*philosophers(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	pthread_mutex_lock(&philo->left_fork);
+	pthread_mutex_lock(philo->left_fork);
 	usleep(100);
-	pthread_mutex_lock(&philo->right_fork);
+	pthread_mutex_lock(philo->right_fork);
 	safe_print(philo->data, "Philosopher %d is eating 🍝\n", philo->id);
-	pthread_mutex_unlock(&philo->left_fork);
-	pthread_mutex_unlock(&philo->right_fork);
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
 	safe_print(philo->data, "Philosopher %d is thinking 💭\n", philo->id);
 	return (NULL);
 }
@@ -76,9 +77,10 @@ int	main(int ac, char **av)
 {
 	t_data data;
 
-	if (ac != 2)
+	if (ac != 3)
 		return (1);
 	data.n_philos = ft_atoi(av[1]);
+	data.time_to_die = ft_atoi(av[2]);
 	data.philos = malloc(sizeof(t_philo) * data.n_philos);
 	data.forks = malloc(sizeof(pthread_mutex_t) * data.n_philos);
 	for (int i = 0; i < data.n_philos; i++)
@@ -87,15 +89,15 @@ int	main(int ac, char **av)
 	for (int i = 0; i < data.n_philos; i++)
 	{
 		data.philos[i].id = i;
-		data.philos[i].left_fork = data.forks[i];
-		data.philos[i].right_fork = data.forks[(i + 1) % data.n_philos];
-		// if (data.philos[i].id % 2)
-		// {
-		// 	pthread_mutex_t tmp;
-		// 	tmp = data.philos[i].left_fork;
-		// 	data.philos[i].left_fork = data.philos[i].right_fork;
-		// 	data.philos[i].right_fork = tmp;
-		// }
+		data.philos[i].left_fork = &data.forks[i];
+		data.philos[i].right_fork = &data.forks[(i + 1) % data.n_philos];
+		if (data.philos[i].id % 2)
+		{
+			pthread_mutex_t *tmp;
+			tmp = data.philos[i].left_fork;
+			data.philos[i].left_fork = data.philos[i].right_fork;
+			data.philos[i].right_fork = tmp;
+		}
 		data.philos[i].data = &data;
 	}
 	for (int i = 0; i < data.n_philos; i++)

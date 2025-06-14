@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 03:07:34 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/09 07:32:20 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/14 17:42:04 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/time.h>
 # include <unistd.h>
 
 # define RED "\033[0;31m"
@@ -57,7 +58,10 @@ int					ft_strlen(char *str);
 char				*ft_strdup(char *s1);
 int					ft_atoi(char *str);
 int					init_data(t_data *data, int ac, char **av);
-void				destroy_forks(pthread_mutex_t *forks, int n);
 void				init_philosophers(t_data *data);
+void				safe_print(t_philo *philo, const char *msg);
+int					philo_simulation(t_data *data);
+long				timestamp_in_ms(void);
+void 				cleanup(t_data *data);
 
 #endif

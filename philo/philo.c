@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 03:07:28 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/09 07:32:59 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/14 15:41:36 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,5 @@ int	main(int ac, char **av)
 	if (!init_data(&data, ac, av))
 		return (printf(RED "Error: Initialization failed.\n" RESET), 1);
 	init_philosophers(&data);
+	philo_simulation(&data);
 }
