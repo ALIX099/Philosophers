@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 03:07:34 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/14 17:42:04 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/15 16:05:19 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ typedef struct s_data
 	long			time_to_sleep;
 	int				max_meals;
 	int				someone_died;
+	int				print_mutex_init;
+	long			start_time;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_mutex;
 	t_philo			*philos;
@@ -62,6 +64,6 @@ void				init_philosophers(t_data *data);
 void				safe_print(t_philo *philo, const char *msg);
 int					philo_simulation(t_data *data);
 long				timestamp_in_ms(void);
-void 				cleanup(t_data *data);
+void				cleanup(t_data *data);
 
 #endif

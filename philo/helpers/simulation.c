@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:14 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/14 17:43:49 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/14 20:29:25 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	eating(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
 	safe_print(philo, "%ld %d has taken a fork\n");
-	usleep(100);
+	usleep(100 * philo->philo_id);
 	pthread_mutex_lock(philo->right_fork);
 	safe_print(philo, "%ld %d has taken a fork\n");
 	safe_print(philo, "%ld %d is eating\n");
@@ -43,7 +43,7 @@ int	philo_simulation(t_data *data)
 	while (++i < data->n_philos)
 	{
 		if (pthread_create(&data->philos[i].thread, NULL, philosophers,
-				&data->philos[i]) == 0) // only test i will return it to the original case
+				&data->philos[i]) != 0)
 			return (cleanup(data), 0);
 	}
 	i = -1;
