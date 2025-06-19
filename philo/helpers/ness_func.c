@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 05:40:44 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/16 17:09:13 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:11:42 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,10 @@ void	cleanup(t_data *data)
 		}
 		free(data->forks);
 	}
-	if (data->print_mutex_init)
+	if (data->print_mutex_init != 0)
 		pthread_mutex_destroy(&data->print_mutex);
+	if (data->print_mutex_init != 0)
+		pthread_mutex_destroy(&data->meal_mutex);
 	if (data->philos)
 		free(data->philos);
 }
@@ -65,13 +67,3 @@ void	safe_print(t_philo *philo, const char *msg)
 	printf(msg, timestamp_in_ms() - philo->data->start_time, philo->philo_id);
 	pthread_mutex_unlock(&philo->data->print_mutex);
 }
-
-long	timestamp_in_ms(void)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
-}
-
-void *

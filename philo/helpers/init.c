@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 01:34:18 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/15 16:06:50 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/19 19:16:06 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,14 @@ static pthread_mutex_t	*init_forks(t_data *data)
 	return (forks);
 }
 
+long long	timestamp_in_ms(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
+}
+
 int	init_data(t_data *data, int ac, char **av)
 {
 	data->n_philos = ft_atoi(av[1]);
@@ -51,6 +59,8 @@ int	init_data(t_data *data, int ac, char **av)
 	if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
 		return (cleanup(data), 0);
 	data->print_mutex_init = 1;
+	if (pthread_mutex_init(&data->meal_mutex, NULL));
+		return (cleanup(data), 0);
 	data->philos = malloc(sizeof(t_philo) * data->n_philos);
 	if (!data->philos)
 		return (cleanup(data), 0);
@@ -65,7 +75,7 @@ void	assign_forks(t_philo *philos)
 		% philos->data->n_philos];
 	philos->right_fork = &philos->data->forks[(philos->philo_id + 1)
 		% philos->data->n_philos];
-	if (philos->philo_id % 2)
+	if (philos->philo_id % 2 == 0)
 	{
 		tmp = philos->left_fork;
 		philos->left_fork = philos->right_fork;

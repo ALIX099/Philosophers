@@ -42,6 +42,5 @@ int	main(int ac, char **av)
 		return (printf(RED "Error: Initialization failed.\n" RESET), 1);
 	init_philosophers(&data);
 	if (!philo_simulation(&data))
-		return (printf(RED "Error: Simulation failed to execute.\n" RESET),
-			1);
+		return (printf(RED "Error: Simulation failed to execute.\n" RESET), 1);
 }

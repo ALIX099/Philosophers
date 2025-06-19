@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 03:07:34 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/15 16:05:19 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/19 18:58:16 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_philo
 	int				philo_id;
 	pthread_t		thread;
 	int				meals_eaten;
-	long			last_meal_time;
+	long long		last_meal_time;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	struct s_data	*data;
@@ -45,10 +45,12 @@ typedef struct s_data
 	long			time_to_sleep;
 	int				max_meals;
 	int				someone_died;
+	long long		start_time;
 	int				print_mutex_init;
-	long			start_time;
-	pthread_mutex_t	*forks;
+	pthread_mutex_t	meal_mutex;
 	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	*forks;
+	pthread_t		death_thread;
 	t_philo			*philos;
 }					t_data;
 
@@ -63,7 +65,7 @@ int					init_data(t_data *data, int ac, char **av);
 void				init_philosophers(t_data *data);
 void				safe_print(t_philo *philo, const char *msg);
 int					philo_simulation(t_data *data);
-long				timestamp_in_ms(void);
+long long			timestamp_in_ms(void);
 void				cleanup(t_data *data);
 
 #endif
