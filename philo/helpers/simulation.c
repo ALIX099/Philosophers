@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:14 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/20 01:52:48 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:13:48 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	one_philosopher(t_data *data)
 	pthread_mutex_unlock(&data->mutex);
 }
 
-void	*death_checker(void *arg)
+void	*check_meal_death(void *arg)
 {
 	t_data	*data;
 	int		i;
@@ -108,7 +108,7 @@ int	philo_simulation(t_data *data)
 				&data->philos[i]) != 0)
 			return (cleanup(data), 0);
 	}
-	if (pthread_create(&data->death_thread, NULL, death_checker, data) != 0)
+	if (pthread_create(&data->death_thread, NULL, check_meal_death, data) != 0)
 		return (cleanup(data), 0);
 	i = -1;
 	while (++i < data->n_philos)

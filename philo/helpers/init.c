@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 01:34:18 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/20 16:59:02 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:16:17 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,18 +69,16 @@ int	init_data(t_data *data, int ac, char **av)
 
 void	assign_forks(t_philo *philos)
 {
-	pthread_mutex_t	*tmp;
+	int	id;
+	int	n;
 
-	philos->left_fork = &philos->data->forks[philos->philo_id
-		% philos->data->n_philos];
-	philos->right_fork = &philos->data->forks[(philos->philo_id + 1)
-		% philos->data->n_philos];
-	if (philos->philo_id % 2 == 0)
-	{
-		tmp = philos->left_fork;
-		philos->left_fork = philos->right_fork;
-		philos->right_fork = tmp;
-	}
+	id = philos->philo_id;
+	n = philos->data->n_philos;
+	philos->left_fork = &philos->data->forks[(id - 1) % n];
+	if (id == n)
+		philos->right_fork = &philos->data->forks[0];
+	else
+		philos->right_fork = &philos->data->forks[id % n];
 }
 
 void	init_philosophers(t_data *data)
