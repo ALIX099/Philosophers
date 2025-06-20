@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 01:34:18 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/20 17:16:17 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:27:48 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,11 @@ void	assign_forks(t_philo *philos)
 
 	id = philos->philo_id;
 	n = philos->data->n_philos;
-	philos->left_fork = &philos->data->forks[(id - 1) % n];
+	philos->left_fork = &philos->data->forks[id - 1];
 	if (id == n)
 		philos->right_fork = &philos->data->forks[0];
 	else
-		philos->right_fork = &philos->data->forks[id % n];
+		philos->right_fork = &philos->data->forks[id];
 }
 
 void	init_philosophers(t_data *data)
