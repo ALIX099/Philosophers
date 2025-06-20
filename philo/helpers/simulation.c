@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:14 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/20 01:06:54 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/20 01:52:48 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,14 @@ void	eating(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
 	safe_print(philo, "%ld %d has taken a fork\n");
+	pthread_mutex_lock(&philo->data->mutex);
+	if (philo->data->someone_died)
+	{
+		pthread_mutex_unlock(&philo->data->mutex);
+		pthread_mutex_unlock(philo->left_fork);
+		return ;
+	}
+	pthread_mutex_unlock(&philo->data->mutex);
 	pthread_mutex_lock(philo->right_fork);
 	safe_print(philo, "%ld %d has taken a fork\n");
 	safe_print(philo, "%ld %d is eating\n");
