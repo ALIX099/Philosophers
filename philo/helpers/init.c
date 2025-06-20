@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 01:34:18 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/20 14:55:22 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/20 16:59:02 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ void	init_philosophers(t_data *data)
 	int	i;
 
 	i = 0;
-	if (data->n_philos > 1000)
-		return (cleanup(data), exit(1));
 	while (i < data->n_philos)
 	{
 		data->philos[i].philo_id = i + 1;
