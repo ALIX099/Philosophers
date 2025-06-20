@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 03:07:34 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/19 18:58:16 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/20 01:05:40 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_data
 	long long		start_time;
 	int				print_mutex_init;
 	pthread_mutex_t	meal_mutex;
-	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	mutex;
 	pthread_mutex_t	*forks;
 	pthread_t		death_thread;
 	t_philo			*philos;
@@ -67,5 +67,7 @@ void				safe_print(t_philo *philo, const char *msg);
 int					philo_simulation(t_data *data);
 long long			timestamp_in_ms(void);
 void				cleanup(t_data *data);
+int					check_philo_death(t_data *data, int i);
+int					check_meals_completion(t_data *data);
 
 #endif

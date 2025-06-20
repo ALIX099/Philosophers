@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 01:34:18 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/19 19:16:06 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/20 00:51:33 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,10 @@ int	init_data(t_data *data, int ac, char **av)
 	if (!data->forks)
 		return (0);
 	data->print_mutex_init = 0;
-	if (pthread_mutex_init(&data->print_mutex, NULL) != 0)
+	if (pthread_mutex_init(&data->mutex, NULL) != 0)
 		return (cleanup(data), 0);
 	data->print_mutex_init = 1;
-	if (pthread_mutex_init(&data->meal_mutex, NULL));
+	if (pthread_mutex_init(&data->meal_mutex, NULL))
 		return (cleanup(data), 0);
 	data->philos = malloc(sizeof(t_philo) * data->n_philos);
 	if (!data->philos)
@@ -92,7 +92,7 @@ void	init_philosophers(t_data *data)
 	{
 		data->philos[i].philo_id = i + 1;
 		data->philos[i].meals_eaten = 0;
-		data->philos[i].last_meal_time = 0;
+		data->philos[i].last_meal_time = data->start_time;
 		data->philos[i].data = data;
 		assign_forks(&data->philos[i]);
 		i++;

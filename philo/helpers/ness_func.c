@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 05:40:44 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/19 19:11:42 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/20 01:08:03 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,68 @@ void	cleanup(t_data *data)
 		free(data->forks);
 	}
 	if (data->print_mutex_init != 0)
-		pthread_mutex_destroy(&data->print_mutex);
-	if (data->print_mutex_init != 0)
-		pthread_mutex_destroy(&data->meal_mutex);
+		pthread_mutex_destroy(&data->mutex);
 	if (data->philos)
+	{
+		pthread_mutex_destroy(&data->meal_mutex);
 		free(data->philos);
+	}
 }
 
 void	safe_print(t_philo *philo, const char *msg)
 {
-	pthread_mutex_lock(&philo->data->print_mutex);
+	pthread_mutex_lock(&philo->data->mutex);
+	if (philo->data->someone_died)
+	{
+		pthread_mutex_unlock(&philo->data->mutex);
+		return ;
+	}
 	printf(msg, timestamp_in_ms() - philo->data->start_time, philo->philo_id);
-	pthread_mutex_unlock(&philo->data->print_mutex);
+	pthread_mutex_unlock(&philo->data->mutex);
+}
+
+int	check_philo_death(t_data *data, int i)
+{
+	long	now;
+
+	pthread_mutex_lock(&data->meal_mutex);
+	now = timestamp_in_ms();
+	if (now - data->philos[i].last_meal_time > data->time_to_die)
+	{
+		pthread_mutex_unlock(&data->meal_mutex);
+		pthread_mutex_lock(&data->mutex);
+		data->someone_died = 1;
+		printf("%lld %d died\n", now - data->start_time,
+			data->philos[i].philo_id);
+		pthread_mutex_unlock(&data->mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(&data->meal_mutex);
+	return (0);
+}
+
+int	check_meals_completion(t_data *data)
+{
+	int	i;
+	int	full_philos;
+
+	if (data->max_meals == -1)
+		return (0);
+	full_philos = 0;
+	i = -1;
+	while (++i < data->n_philos)
+	{
+		pthread_mutex_lock(&data->meal_mutex);
+		if (data->philos[i].meals_eaten >= data->max_meals)
+			full_philos++;
+		pthread_mutex_unlock(&data->meal_mutex);
+	}
+	if (full_philos == data->n_philos)
+	{
+		pthread_mutex_lock(&data->mutex);
+		data->someone_died = 1;
+		pthread_mutex_unlock(&data->mutex);
+		return (1);
+	}
+	return (0);
 }
