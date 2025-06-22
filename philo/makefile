@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -Werror -g3
 
 SRC = $(wildcard *.c) \
       $(wildcard parsing/*.c) \
-	  $(wildcard helpers/* .c)
+	  $(wildcard helpers/*.c)
 
 OBJS = $(SRC:.c=.o)
 
