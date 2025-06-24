@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:14 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/20 17:13:48 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/24 05:24:31 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,7 @@ int	philo_simulation(t_data *data)
 
 	i = -1;
 	if (data->n_philos == 1)
-	{
-		one_philosopher(data);
-		return (1);
-	}
+		return (one_philosopher(data) , 1);
 	while (++i < data->n_philos)
 	{
 		if (pthread_create(&data->philos[i].thread, NULL, philosophers,
@@ -116,6 +113,7 @@ int	philo_simulation(t_data *data)
 		if (pthread_join(data->philos[i].thread, NULL) != 0)
 			return (cleanup(data), 0);
 	}
+	usleep(500);
 	if (pthread_join(data->death_thread, NULL) != 0)
 		return (cleanup(data), 0);
 	return (1);

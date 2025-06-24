@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 01:34:18 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/20 17:27:48 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/24 05:20:08 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	init_philosophers(t_data *data)
 	{
 		data->philos[i].philo_id = i + 1;
 		data->philos[i].meals_eaten = 0;
-		data->philos[i].last_meal_time = data->start_time;
+		data->philos[i].last_meal_time = timestamp_in_ms();
 		data->philos[i].data = data;
 		assign_forks(&data->philos[i]);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 05:40:44 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/20 02:20:36 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/24 05:21:59 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,17 +76,22 @@ void	safe_print(t_philo *philo, const char *msg)
 
 int	check_philo_death(t_data *data, int i)
 {
-	long	now;
+	long long	now;
+	long long	last_meal;
 
 	pthread_mutex_lock(&data->meal_mutex);
 	now = timestamp_in_ms();
-	if (now - data->philos[i].last_meal_time > data->time_to_die)
+	last_meal = data->philos[i].last_meal_time;
+	if (now - last_meal > data->time_to_die)
 	{
 		pthread_mutex_unlock(&data->meal_mutex);
 		pthread_mutex_lock(&data->mutex);
-		data->someone_died = 1;
-		printf("%lld %d died\n", now - data->start_time,
-			data->philos[i].philo_id);
+		if (!data->someone_died)
+		{
+			data->someone_died = 1;
+			printf("%lld %d died\n", now - data->start_time,
+				data->philos[i].philo_id);
+		}
 		pthread_mutex_unlock(&data->mutex);
 		return (1);
 	}
