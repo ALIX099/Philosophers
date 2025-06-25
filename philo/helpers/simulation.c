@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:14 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/24 05:48:58 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/06/25 23:55:09 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	*check_meal_death(void *arg)
 
 void	eating(t_philo *philo)
 {
+	// int arr[philo->data->n_philos];
+
 	pthread_mutex_lock(philo->left_fork);
 	safe_print(philo, "%ld %d has taken a fork\n");
 	pthread_mutex_lock(philo->right_fork);
@@ -73,8 +75,8 @@ void	*philosophers(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	if (philo->philo_id % 2 == 0)
-		usleep(1000);
+	if (philo->philo_id % 2)
+		usleep(6000);
 	while (1)
 	{
 		pthread_mutex_lock(&philo->data->mutex);
