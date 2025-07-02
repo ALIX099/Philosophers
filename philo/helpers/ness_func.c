@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 05:40:44 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/24 05:21:59 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/02 14:45:53 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	safe_print(t_philo *philo, const char *msg)
 	pthread_mutex_unlock(&philo->data->mutex);
 }
 
-int	check_philo_death(t_data *data, int i)
+int	death_check(t_data *data, int i)
 {
 	long long	now;
 	long long	last_meal;
@@ -99,7 +99,7 @@ int	check_philo_death(t_data *data, int i)
 	return (0);
 }
 
-int	check_meals_completion(t_data *data)
+int	meals_check(t_data *data)
 {
 	int	i;
 	int	full_philos;

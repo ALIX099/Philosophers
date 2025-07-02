@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:14 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/02 09:17:22 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/02 14:45:58 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ void	*check_meal_death(void *arg)
 		i = -1;
 		while (++i < data->n_philos)
 		{
-			if (check_philo_death(data, i))
+			if (death_check(data, i))
 				return (NULL);
 		}
-		if (check_meals_completion(data))
+		if (meals_check(data))
 			return (NULL);
 		ft_usleep(100);
 	}
