@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:14 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/02 14:45:58 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/02 17:33:49 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	eating(t_philo *philo)
 	{
 		pthread_mutex_unlock(&philo->data->mutex);
 		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
 		return ;
 	}
 	pthread_mutex_unlock(&philo->data->mutex);
