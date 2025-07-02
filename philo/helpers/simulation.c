@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:14 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/25 23:55:09 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/02 09:17:22 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	one_philosopher(t_data *data)
 {
 	safe_print(&data->philos[0], "%ld %d has taken a fork\n");
-	usleep(data->time_to_die * 1000);
+	ft_usleep(data->time_to_die);
 	pthread_mutex_lock(&data->mutex);
 	data->someone_died = 1;
 	printf("%lld %d died\n", timestamp_in_ms() - data->start_time,
@@ -39,15 +39,13 @@ void	*check_meal_death(void *arg)
 		}
 		if (check_meals_completion(data))
 			return (NULL);
-		usleep(1000);
+		ft_usleep(100);
 	}
 	return (NULL);
 }
 
 void	eating(t_philo *philo)
 {
-	// int arr[philo->data->n_philos];
-
 	pthread_mutex_lock(philo->left_fork);
 	safe_print(philo, "%ld %d has taken a fork\n");
 	pthread_mutex_lock(philo->right_fork);
@@ -65,7 +63,7 @@ void	eating(t_philo *philo)
 	philo->last_meal_time = timestamp_in_ms();
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->data->meal_mutex);
-	usleep(philo->data->time_to_eat * 1000);
+	ft_usleep(philo->data->time_to_eat);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 }
@@ -76,7 +74,7 @@ void	*philosophers(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->philo_id % 2)
-		usleep(6000);
+		ft_usleep(philo->data->time_to_eat / 2);
 	while (1)
 	{
 		pthread_mutex_lock(&philo->data->mutex);
@@ -88,7 +86,7 @@ void	*philosophers(void *arg)
 		pthread_mutex_unlock(&philo->data->mutex);
 		eating(philo);
 		safe_print(philo, "%ld %d is sleeping\n");
-		usleep(philo->data->time_to_sleep * 1000);
+		ft_usleep(philo->data->time_to_sleep);
 		safe_print(philo, "%ld %d is thinking\n");
 	}
 	return (NULL);
@@ -115,7 +113,7 @@ int	philo_simulation(t_data *data)
 		if (pthread_join(data->philos[i].thread, NULL) != 0)
 			return (cleanup(data), 0);
 	}
-	usleep(500);
+	ft_usleep(50);
 	if (pthread_join(data->death_thread, NULL) != 0)
 		return (cleanup(data), 0);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 03:07:34 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/20 01:05:40 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/02 09:08:40 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,6 @@ long long			timestamp_in_ms(void);
 void				cleanup(t_data *data);
 int					check_philo_death(t_data *data, int i);
 int					check_meals_completion(t_data *data);
+void				ft_usleep(long time_in_ms);
 
 #endif

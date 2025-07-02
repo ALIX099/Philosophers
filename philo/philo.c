@@ -6,11 +6,30 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 03:07:28 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/22 13:51:12 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/02 09:08:17 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	ft_usleep(long time_in_ms)
+{
+	long long	start;
+	long long	current;
+	long long	elapsed;
+
+	if (time_in_ms <= 0)
+		return ;
+	start = timestamp_in_ms();
+	while (1)
+	{
+		current = timestamp_in_ms();
+		elapsed = current - start;
+		if (elapsed >= time_in_ms)
+			break ;
+		usleep(100);
+	}
+}
 
 static void	pars_function(int ac, char **av)
 {
