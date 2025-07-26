@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simulation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
+/*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:14 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/24 23:58:56 by macbookpro       ###   ########.fr       */
+/*   Updated: 2025/07/26 21:56:52 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	*philosophers(void *arg)
 		pthread_mutex_unlock(&philo->data->mutex);
 		eating(philo);
 		safe_print(philo, "%ld %d is sleeping\n");
-		ft_usleep(philo->data->time_to_sleep, philo->data );
+		ft_usleep(philo->data->time_to_sleep, philo->data);
 		safe_print(philo, "%ld %d is thinking\n");
 	}
 	return (NULL);

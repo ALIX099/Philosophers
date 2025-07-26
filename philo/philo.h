@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
+/*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 03:07:34 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/10 15:37:08 by macbookpro       ###   ########.fr       */
+/*   Updated: 2025/07/26 16:52:54 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,6 @@
 # include <unistd.h>
 
 # define RED "\033[0;31m"
-# define GREEN "\033[0;32m"
-# define YELLOW "\033[1;33m"
-# define BLUE "\033[0;34m"
 # define RESET "\033[0m"
 
 typedef struct s_philo

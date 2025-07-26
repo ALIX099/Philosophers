@@ -12,26 +12,26 @@
 
 #include "../philo_bonus.h"
 
-int is_valid_arg(int ac, char **av)
+int	is_valid_arg(int ac, char **av)
 {
-    int i;
-    int a;
+	int	i;
+	int	a;
 
-    a = 1;
-    while (a < ac)
-    {
-        i = 0;
-        if (av[a][i] == '+')
-            i++;
-        if (av[a][i] == '\0')
-            return (0);
-        while (av[a][i])
-        {
-            if (av[a][i] > '9' || av[a][i] < '0')
-                return (0);
-            i++;
-        }
-        a++;
-    }
-    return (1);
+	a = 1;
+	while (a < ac)
+	{
+		i = 0;
+		if (av[a][i] == '+')
+			i++;
+		if (av[a][i] == '\0')
+			return (0);
+		while (av[a][i])
+		{
+			if (av[a][i] > '9' || av[a][i] < '0')
+				return (0);
+			i++;
+		}
+		a++;
+	}
+	return (1);
 }
