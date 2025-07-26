@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 01:34:18 by abouknan          #+#    #+#             */
-/*   Updated: 2025/06/24 05:20:08 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/25 00:01:01 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ int	init_data(t_data *data, int ac, char **av)
 	data->max_meals = -1;
 	if (ac > 5)
 		data->max_meals = ft_atoi(av[5]);
-	if (data->n_philos == 0 || data->time_to_die == 0 || data->time_to_eat == 0
-		|| data->time_to_sleep == 0)
+	if (data->n_philos <= 0 || data->time_to_die <= 0 || data->time_to_eat <= 0
+		|| data->time_to_sleep <= 0)
 		return (0);
 	data->someone_died = 0;
 	data->forks = init_forks(data);

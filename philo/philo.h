@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 03:07:34 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/02 14:45:49 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/10 15:37:08 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,6 @@ long long			timestamp_in_ms(void);
 void				cleanup(t_data *data);
 int					death_check(t_data *data, int i);
 int					meals_check(t_data *data);
-void				ft_usleep(long time_in_ms);
+void				ft_usleep(long time_in_ms, t_data *data);
 
 #endif

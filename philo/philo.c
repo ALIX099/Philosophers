@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 03:07:28 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/02 09:08:17 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/12 01:05:24 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_usleep(long time_in_ms)
+void	ft_usleep(long time_in_ms, t_data *data)
 {
 	long long	start;
 	long long	current;
@@ -23,10 +23,15 @@ void	ft_usleep(long time_in_ms)
 	start = timestamp_in_ms();
 	while (1)
 	{
+		pthread_mutex_lock(&data->mutex);
 		current = timestamp_in_ms();
 		elapsed = current - start;
-		if (elapsed >= time_in_ms)
+		if (elapsed >= time_in_ms || data->someone_died)
+		{
+			pthread_mutex_unlock(&data->mutex);
 			break ;
+		}
+		pthread_mutex_unlock(&data->mutex);
 		usleep(100);
 	}
 }
