@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 20:56:17 by macbookpro        #+#    #+#             */
-/*   Updated: 2025/07/27 03:03:57 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/27 16:17:48 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	ft_atoi(char *str)
 {
-	int		mul;
-	int		i;
-	long	result;
+	int			mul;
+	int			i;
+	long long	result;
 
 	mul = 1;
 	i = 0;
