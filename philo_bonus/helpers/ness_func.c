@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 20:56:17 by macbookpro        #+#    #+#             */
-/*   Updated: 2025/07/27 16:17:48 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/27 18:55:34 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	ft_usleep(long time_to_sleep, t_philo *philo)
 	long long	start_time;
 
 	start_time = timestamp_in_ms();
-	while (timestamp_in_ms() - start_time < time_to_sleep)
+	while (timestamp_in_ms() - start_time <= time_to_sleep)
 	{
 		if (timestamp_in_ms()
 			- philo->last_meal_time >= philo->data->time_to_die)
