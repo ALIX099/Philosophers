@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 23:26:47 by macbookpro        #+#    #+#             */
-/*   Updated: 2025/07/27 03:04:28 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/27 18:07:48 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	ft_simulation(t_data *data)
 		if ((data->max_meals == 0) || (timestamp_in_ms()
 				- philo->last_meal_time >= data->time_to_die))
 			exit(0);
-		if (data->n_philos % 2 == 0)
-			ft_usleep(data->time_to_sleep / 2, philo);
+		if (data->philos->philo_id % 2)
+			ft_usleep(philo->data->time_to_eat / 2, philo->data);
 		sem_wait(data->forks);
 		safe_print(philo, "%lld %d has taken a fork\n");
 		sem_wait(data->forks);
