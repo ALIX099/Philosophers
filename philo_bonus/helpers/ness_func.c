@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 20:56:17 by macbookpro        #+#    #+#             */
-/*   Updated: 2025/07/26 22:15:17 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/27 03:03:57 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ft_atoi(char *str)
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		result = result * 10 + (str[i++] - '0');
-		if ((mul == 1 && result > INT_MAX) || (mul == -1 && - result < INT_MIN))
+		if ((mul == 1 && result > INT_MAX) || (mul == -1 && -result < INT_MIN))
 			return (INT_MAX - 1);
 	}
 	return ((int)(result * mul));
@@ -59,38 +59,28 @@ void	ft_cleanup(t_data *data)
 	sem_close(data->state);
 }
 
-void safe_print(t_philo *philo, const char *msg)
+void	ft_usleep(long time_to_sleep, t_philo *philo)
 {
-	sem_wait(philo->data->print);
-	if (philo->data->someone_died)
-	{
-		sem_post(philo->data->print);
-		return ;
-	}
-	printf(msg, timestamp_in_ms() - philo->data->start_time, philo->philo_id);
-	sem_post(philo->data->print);
-}
+	long long	start_time;
 
-void	ft_usleep(long time_in_ms, t_data *data)
-{
-	long long	start;
-	long long	current;
-
-	if (time_in_ms <= 0)
-		return ;
-	start = timestamp_in_ms();
-	while (1)
+	start_time = timestamp_in_ms();
+	while (timestamp_in_ms() - start_time < time_to_sleep)
 	{
-		sem_wait(data->state);
-		if (data->someone_died)
+		if (timestamp_in_ms()
+			- philo->last_meal_time >= philo->data->time_to_die)
 		{
-			sem_post(data->state);
-			break ;
+			sem_wait(philo->data->print);
+			printf("%lld %d died\n", timestamp_in_ms()
+				- philo->data->start_time, philo->philo_id);
+			exit(1);
 		}
-		sem_post(data->state);
-		current = timestamp_in_ms();
-		if (current - start >= time_in_ms)
-			break ;
 		usleep(100);
 	}
+}
+
+void	safe_print(t_philo *philo, const char *msg)
+{
+	sem_wait(philo->data->print);
+	printf(msg, timestamp_in_ms() - philo->data->start_time, philo->philo_id);
+	sem_post(philo->data->print);
 }

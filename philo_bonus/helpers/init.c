@@ -6,12 +6,11 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 18:20:30 by macbookpro        #+#    #+#             */
-/*   Updated: 2025/07/26 23:01:32 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/27 02:30:59 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo_bonus.h"
-#include <asm-generic/fcntl.h>
 
 void	init_philos(t_data *data)
 {
@@ -41,7 +40,6 @@ void	init_data(t_data *data, int ac, char **av)
 		|| data->time_to_sleep <= 0)
 		return (printf(RED "Error : An argument is unacceptable\n"), exit(1));
 	data->start_time = timestamp_in_ms();
-	data->someone_died = 0;
 	data->forks = sem_open("/forks", O_CREAT, 0644, data->n_philos);
 	data->print = sem_open("/print", O_CREAT, 0644, 1);
 	data->state = sem_open("/state", O_CREAT, 0644, 1);
@@ -55,10 +53,9 @@ void	init_data(t_data *data, int ac, char **av)
 void	init_processes(t_data *data)
 {
 	int	i;
-	int	status;
 
-	i = 0;
-	while (i < data->n_philos)
+	i = -1;
+	while (++i < data->n_philos)
 	{
 		data->philos[i].pid = fork();
 		if (data->philos[i].pid == -1)
@@ -69,15 +66,8 @@ void	init_processes(t_data *data)
 			if (data->n_philos == 1)
 				one_philo(data);
 			else
-				ft_simulation(data, 0);
+				ft_simulation(data);
 			exit(0);
 		}
-		i++;
-	}
-	i = 0;
-	while (i < data->n_philos)
-	{
-		waitpid(data->philos[i].pid, &status, 0);
-		i++;
 	}
 }

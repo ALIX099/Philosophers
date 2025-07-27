@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g3 -pthread
+CFLAGS = -Wall -Wextra -Werror -g3
 
 SRC = $(wildcard *.c) \
       $(wildcard parsing/*.c) \

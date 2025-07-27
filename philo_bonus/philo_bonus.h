@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 08:19:21 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/26 21:56:58 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/27 02:24:37 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sys/time.h>
 # include <unistd.h>
 # include <sys/wait.h>
+#include <asm-generic/fcntl.h>
 
 # define RED "\033[0;31m"
 # define RESET "\033[0m"
@@ -42,7 +43,6 @@ typedef struct s_data
 	long			time_to_eat;
 	long			time_to_sleep;
 	int				max_meals;
-	int				someone_died;
 	long long		start_time;
 	sem_t			*forks;
 	sem_t			*print;
@@ -55,10 +55,10 @@ void				init_data(t_data *data, int ac, char **av);
 int					ft_atoi(char *str);
 void				ft_cleanup(t_data *data);
 long long			timestamp_in_ms(void);
-void				ft_simulation(t_data *data, int num);
+void				ft_simulation(t_data *data);
 void				init_processes(t_data *data);
 void				safe_print(t_philo *philo, const char *msg);
-void				ft_usleep(long time_in_ms, t_data *data);
+void				ft_usleep(long time_in_ms, t_philo *philo);
 void				one_philo(t_data *data);
 
 #endif
