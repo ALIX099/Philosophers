@@ -6,7 +6,7 @@
 /*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 18:20:30 by macbookpro        #+#    #+#             */
-/*   Updated: 2025/07/28 09:50:00 by macbookpro       ###   ########.fr       */
+/*   Updated: 2025/07/28 13:59:14 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	init_philos(t_data *data)
 	{
 		data->philos[i].philo_id = i + 1;
 		data->philos[i].meals_eaten = 0;
+		data->philos[i].meals_to_eat = data->max_meals;
 		data->philos[i].last_meal_time = timestamp_in_ms();
 		data->philos[i].data = data;
 		i++;
@@ -67,28 +68,35 @@ void	init_data(t_data *data, int ac, char **av)
 
 void	init_processes(t_data *data)
 {
-	int	i;
-	int status;
+	int		i;
+	int		status;
 
 	i = -1;
 	while (++i < data->n_philos)
 	{
 		data->philos[i].pid = fork();
 		if (data->philos[i].pid == -1)
-			return (ft_cleanup(data), printf(RED "Unable to Create a Thread\n"),
+			return (ft_cleanup(data), printf(RED "Unable to Create a Process\n"),
 				exit(1));
 		else if (data->philos[i].pid == 0)
 		{
 			if (data->n_philos == 1)
 				one_philo(data);
 			else
-				ft_simulation(data->philos);
+				ft_simulation(&data->philos[i]);
+			exit(0);
 		}
 	}
-	i = 0;
-	while (i < data->n_philos)
+	i = -1;
+	while (++i < data->n_philos)
 	{
 		waitpid(-1, &status, 0);
-		i++;
+		if (WIFEXITED(status) && WEXITSTATUS(status) == EXIT_FAILURE)
+		{
+			int j = -1;
+			while (++j < data->n_philos)
+				kill(data->philos[j].pid, SIGKILL);
+			break;
+		}
 	}
 }

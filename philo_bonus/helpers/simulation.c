@@ -6,7 +6,7 @@
 /*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 23:26:47 by macbookpro        #+#    #+#             */
-/*   Updated: 2025/07/28 09:56:20 by macbookpro       ###   ########.fr       */
+/*   Updated: 2025/07/28 13:51:58 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,49 +25,51 @@ void	one_philo(t_data *data)
 		philo->philo_id);
 	sem_post(data->print);
 	sem_post(data->forks);
+	exit(EXIT_FAILURE);
 }
+
 void eating(t_philo *philo)
 {
-	t_data *data;
-
-	data = philo->data;
+	t_data *data = philo->data;
+	
 	sem_wait(data->forks);
 	safe_print(philo, "%lld %d has taken a fork\n");
 	sem_wait(data->forks);
 	safe_print(philo, "%lld %d has taken a fork\n");
 	safe_print(philo, "%lld %d is eating\n");
+	
 	sem_wait(data->state);
 	philo->last_meal_time = timestamp_in_ms();
-	if (data->max_meals > 0)
-		data->max_meals--;
+	philo->meals_eaten++;
+	int meals_completed = (data->max_meals > 0 && 
+		philo->meals_eaten >= data->max_meals);
 	sem_post(data->state);
+	
 	ft_usleep(data->time_to_eat, philo);
 	sem_post(data->forks);
 	sem_post(data->forks);
-	exit(EXIT_SUCCESS);
+	
+	if (meals_completed)
+		exit(EXIT_SUCCESS);
 }
 
-void *cycle(void *args)
+void *monitor(void *args)
 {
-	t_philo *philo;
+	t_philo *philo = (t_philo *)args;
 	
-	philo = (t_philo *)args;
 	while (1)
 	{
-		if (timestamp_in_ms()
-			- philo->last_meal_time >= philo->data->time_to_die)
+		ft_usleep(1, philo);
+		sem_wait(philo->data->state);
+		if (philo->data->someone_died || 
+			(timestamp_in_ms() - philo->last_meal_time >= philo->data->time_to_die))
 		{
-			sem_wait(philo->data->print);
-			sem_wait(philo->data->state);
-			philo->data->someone_died = 1;
+			if (!philo->data->someone_died)
+				philo->data->someone_died = 1;
 			sem_post(philo->data->state);
-			printf("%lld %d died\n", timestamp_in_ms()
-				- philo->data->start_time, philo->philo_id);
-			sem_post(philo->data->print);
 			break;
 		}
-		if (philo->data->max_meals <= 0)
-			break;
+		sem_post(philo->data->state);
 	}
 	return (NULL);
 }
@@ -75,21 +77,28 @@ void *cycle(void *args)
 void	ft_simulation(t_philo *philo)
 {
 	pthread_t thread;
-	t_data	*data;
+	t_data	*data = philo->data;
 	
-	data = philo->data;
-	if (pthread_create(&thread, NULL, cycle, philo))
-		return (ft_cleanup(data), printf (RED"Error : Fail in Thread Creating!\n"), exit(EXIT_FAILURE));
+	if (pthread_create(&thread, NULL, monitor, philo))
+	{
+		printf(RED"Error: Fail in Thread Creating!\n");
+		exit(EXIT_FAILURE);
+	}
+	pthread_detach(thread);
 	if (philo->philo_id % 2)
 		ft_usleep(1, philo);
 	while (1)
 	{
+		sem_wait(data->state);
 		if (data->someone_died)
-			exit_proc(data);
+		{
+			sem_post(data->state);
+			exit_proc(data, "died", philo->philo_id);
+		}
+		sem_post(data->state);
 		eating(philo);
 		safe_print(philo, "%lld %d is sleeping\n");
 		ft_usleep(data->time_to_sleep, philo);
 		safe_print(philo, "%lld %d is thinking\n");
 	}
-	pthread_join(thread, NULL);
 }

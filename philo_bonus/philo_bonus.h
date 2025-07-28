@@ -6,7 +6,7 @@
 /*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 08:19:21 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/28 09:51:42 by macbookpro       ###   ########.fr       */
+/*   Updated: 2025/07/28 13:51:28 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <sys/time.h>
 # include <unistd.h>
 # include <sys/wait.h>
-// #include <asm-generic/fcntl.h>
+#include <fcntl.h>
 
 # define RED "\033[0;31m"
 # define RESET "\033[0m"
@@ -32,6 +32,7 @@ typedef struct s_philo
 	int				philo_id;
 	pid_t			pid;
 	int				meals_eaten;
+	int 			meals_to_eat;
 	long long		last_meal_time;
 	struct s_data	*data;
 }					t_philo;
@@ -61,6 +62,7 @@ void				init_processes(t_data *data);
 void				safe_print(t_philo *philo, const char *msg);
 void				ft_usleep(long time_in_ms, t_philo *philo);
 void				one_philo(t_data *data);
-void	exit_proc(t_data *data);
+int 				ft_strcmp(const char *s1, const char *s2);
+void				exit_proc(t_data *data, const char *status, int philo_id);
 
 #endif
