@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   pars.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
+/*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/14 01:31:21 by macbookpro        #+#    #+#             */
-/*   Updated: 2025/07/14 01:48:52 by macbookpro       ###   ########.fr       */
+/*   Created: 2025/07/28 19:21:39 by abouknan          #+#    #+#             */
+/*   Updated: 2025/07/28 19:21:42 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../philo_bonus.h"
 
