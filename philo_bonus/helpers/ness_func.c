@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ness_func.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 20:56:17 by macbookpro        #+#    #+#             */
-/*   Updated: 2025/07/27 18:55:34 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/28 09:47:18 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,22 +41,17 @@ int	ft_atoi(char *str)
 
 void	ft_cleanup(t_data *data)
 {
-	int	i;
-
-	i = 0;
-	while (i < data->n_philos)
-	{
-		kill(data->philos[i].pid, SIGKILL);
-		i++;
-	}
 	if (data->philos)
 		free(data->philos);
 	unlink("/print");
 	unlink("/forks");
 	unlink("/state");
-	sem_close(data->print);
-	sem_close(data->forks);
-	sem_close(data->state);
+	if (data->print)
+		sem_close(data->print);
+	if (data->forks)
+		sem_close(data->forks);
+	if (data->state)
+		sem_close(data->state);
 }
 
 void	ft_usleep(long time_to_sleep, t_philo *philo)
@@ -64,23 +59,36 @@ void	ft_usleep(long time_to_sleep, t_philo *philo)
 	long long	start_time;
 
 	start_time = timestamp_in_ms();
-	while (timestamp_in_ms() - start_time <= time_to_sleep)
-	{
-		if (timestamp_in_ms()
-			- philo->last_meal_time >= philo->data->time_to_die)
-		{
-			sem_wait(philo->data->print);
-			printf("%lld %d died\n", timestamp_in_ms()
-				- philo->data->start_time, philo->philo_id);
-			exit(1);
-		}
+	while (!philo->data->someone_died && (timestamp_in_ms() - start_time <= time_to_sleep))
 		usleep(100);
-	}
 }
 
 void	safe_print(t_philo *philo, const char *msg)
 {
+	if (philo->data->someone_died)
+		return ;
 	sem_wait(philo->data->print);
 	printf(msg, timestamp_in_ms() - philo->data->start_time, philo->philo_id);
 	sem_post(philo->data->print);
+}
+
+void	exit_proc(t_data *data)
+{
+	int i;
+
+	i = 0;
+	while (i < data->n_philos)
+	{
+		kill(data->philos[i].pid, SIGKILL);
+		i++;
+	}
+	sem_close(data->forks);
+	sem_close(data->state);
+	sem_close(data->print);
+	if (data->philos)
+		free(data->philos);
+	if (data->someone_died)
+		exit(1);
+	else if (!data->someone_died)
+		exit(0);
 }

@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 18:20:30 by macbookpro        #+#    #+#             */
-/*   Updated: 2025/07/27 02:30:59 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/28 09:50:00 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo_bonus.h"
+
+void init_semaphores(t_data *data)
+{
+	sem_unlink("/forks");
+	sem_unlink("/print");
+	sem_unlink("/state");
+	data->forks = sem_open("/forks", O_CREAT | O_EXCL, 0644, data->n_philos);
+	data->print = sem_open("/print", O_CREAT | O_EXCL, 0644, 1);
+	data->state = sem_open("/state", O_CREAT | O_EXCL, 0644, 1);
+	if (data->forks == SEM_FAILED || data->print == SEM_FAILED || data->state == SEM_FAILED)
+		return (printf(RED "Error : While Opening a Semaphore!\n"), exit(EXIT_FAILURE));
+}
 
 void	init_philos(t_data *data)
 {
@@ -35,24 +47,28 @@ void	init_data(t_data *data, int ac, char **av)
 	data->time_to_sleep = ft_atoi(av[4]);
 	data->max_meals = -1;
 	if (ac > 5)
+	{
 		data->max_meals = ft_atoi(av[5]);
+		if (data->max_meals <= 0 || data->max_meals == INT_MAX - 1)
+			return (printf(RED "Error : An argument is unacceptable\n"), exit(EXIT_FAILURE));
+	}
 	if (data->n_philos <= 0 || data->time_to_die <= 0 || data->time_to_eat <= 0
 		|| data->time_to_sleep <= 0)
 		return (printf(RED "Error : An argument is unacceptable\n"), exit(1));
 	data->start_time = timestamp_in_ms();
-	data->forks = sem_open("/forks", O_CREAT, 0644, data->n_philos);
-	data->print = sem_open("/print", O_CREAT, 0644, 1);
-	data->state = sem_open("/state", O_CREAT, 0644, 1);
+	data->someone_died = 0;
+	init_semaphores(data);
 	data->philos = (t_philo *)malloc(sizeof(t_philo) * data->n_philos);
 	if (!data->philos)
 		return (ft_cleanup(data), printf(RED "Error : While Allocating\n"),
-			exit(1));
+			exit(EXIT_FAILURE));
 	init_philos(data);
 }
 
 void	init_processes(t_data *data)
 {
 	int	i;
+	int status;
 
 	i = -1;
 	while (++i < data->n_philos)
@@ -61,13 +77,18 @@ void	init_processes(t_data *data)
 		if (data->philos[i].pid == -1)
 			return (ft_cleanup(data), printf(RED "Unable to Create a Thread\n"),
 				exit(1));
-		if (data->philos[i].pid == 0)
+		else if (data->philos[i].pid == 0)
 		{
 			if (data->n_philos == 1)
 				one_philo(data);
 			else
-				ft_simulation(data);
-			exit(0);
+				ft_simulation(data->philos);
 		}
+	}
+	i = 0;
+	while (i < data->n_philos)
+	{
+		waitpid(-1, &status, 0);
+		i++;
 	}
 }
