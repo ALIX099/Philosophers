@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_bonus.c                                       :+:      :+:    :+:   */
+/*   philo_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 19:18:51 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/28 20:13:11 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/28 20:34:37 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	wait_for_children(t_data *data)
 		;
 }
 
-void	fork_philos(t_data *data)
+void	init_philosophers(t_data *data)
 {
 	int	i;
 
@@ -91,7 +91,7 @@ int	main(int ac, char *av[])
 	init_data(&data, ac, av);
 	init_semaphores(&data);
 	data.start_time = timestamp_in_ms();
-	fork_philos(&data);
+	init_philosophers(&data);
 	clear_data(&data);
 	return (0);
 }
