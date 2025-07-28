@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../philo_bonus.h"
 
 void	clean_exit(t_philo *philo, int status)

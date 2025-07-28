@@ -10,10 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../philo_bonus.h"
 
-void take_forks(t_philo *philo)
+void	take_forks(t_philo *philo)
 {
 	sem_wait(philo->data->state);
 	sem_wait(philo->data->forks);

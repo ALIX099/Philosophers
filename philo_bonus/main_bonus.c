@@ -10,13 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "philo_bonus.h"
 
 void	ft_usleep(t_data *data, long time)
 {
 	long	start;
-
 
 	start = timestamp_in_ms();
 	while ((timestamp_in_ms() - start < time) && !check_state(data))

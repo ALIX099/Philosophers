@@ -62,9 +62,9 @@ typedef struct s_data
 	t_philo			*philos;
 }					t_data;
 
-int	ft_atoi(char *str);
-long	timestamp_in_ms(void);
-int	is_valid_arg(int ac, char **av);
+int					ft_atoi(char *str);
+long				timestamp_in_ms(void);
+int					is_valid_arg(int ac, char **av);
 void				print_error(char *msg, t_data *data);
 void				clear_data(t_data *data);
 size_t				ft_strlen(const char *s);
