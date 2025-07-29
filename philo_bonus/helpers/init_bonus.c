@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 19:12:07 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/29 01:21:05 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/29 02:58:01 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ void	wait_for_children(t_data *data)
 	int		status;
 	pid_t	pid;
 	long	died_time;
-
+	
+	pid = 1;
 	while (pid > 0)
 	{
 		pid = waitpid(-1, &status, 0);

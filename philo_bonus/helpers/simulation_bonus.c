@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 19:21:18 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/29 01:12:54 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/29 02:57:29 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	*cycle(void *arg)
 	{
 		sem_wait(philo->data->sem_meal);
 		now = timestamp_in_ms();
-		if (now - philo->last_meal_time >= philo->data->time_to_die)
+		if (now - philo->last_meal_time > philo->data->time_to_die)
 		{
 			assign_death_flag(philo->data);
 			sem_post(philo->data->sem_meal);

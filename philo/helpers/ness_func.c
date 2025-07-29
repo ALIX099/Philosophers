@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 05:40:44 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/29 01:37:43 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/29 02:53:19 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	death_check(t_data *data, int i)
 	pthread_mutex_lock(&data->meal_mutex);
 	now = timestamp_in_ms();
 	last_meal = data->philos[i].last_meal_time;
-	if (now - last_meal >= data->time_to_die)
+	if (now - last_meal > data->time_to_die)
 	{
 		pthread_mutex_unlock(&data->meal_mutex);
 		pthread_mutex_lock(&data->mutex);
