@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 19:12:07 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/29 03:22:35 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/29 03:59:26 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,12 @@ void	init_data(t_data *data, int ac, char **av)
 	if (ac > 5)
 	{
 		data->max_meals = ft_atoi(av[5]);
-		if (data->max_meals <= 0 || data->max_meals == INT_MAX - 1)
+		if (data->max_meals <= -2)
 			return (printf(RED "Error : An argument is unacceptable\n" RESET),
 				exit(EXIT_FAILURE));
 	}
-	if (data->n_philos <= 0 || data->n_philos == INT_MAX - 1
-		|| data->time_to_die <= 0 || data->time_to_die == INT_MAX - 1
-		|| data->time_to_eat <= 0 || data->time_to_eat == INT_MAX - 1
-		|| data->time_to_sleep <= 0 || data->time_to_sleep == INT_MAX - 1)
+	if (data->n_philos <= 0 || data->time_to_die <= 0 || data->time_to_eat <= 0
+		|| data->time_to_sleep <= 0)
 		return (printf(RED "Error : An argument is unacceptable\n" RESET),
 			exit(1));
 	init_semaphores(data);
