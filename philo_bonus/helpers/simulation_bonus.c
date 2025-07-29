@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simulation_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/28 19:21:18 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/29 02:57:29 by abouknan         ###   ########.fr       */
+/*   Created: 2025/07/18 19:21:18 by abouknan          #+#    #+#             */
+/*   Updated: 2025/07/29 12:29:08 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
