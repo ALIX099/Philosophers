@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 19:21:25 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/29 01:12:59 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/29 01:21:49 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ void	safe_print(t_philo *philo, const char *msg)
 
 void	kill_all(t_data *data)
 {
-	int i = -1;
+	int	i;
+
+	i = -1;
 	while (++i < data->n_philos)
 		kill(data->philos[i].pid, SIGKILL);
 }
