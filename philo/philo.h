@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 03:07:34 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/29 00:32:39 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/29 04:12:01 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,7 @@ typedef struct s_data
 	t_philo			*philos;
 }					t_data;
 
-int					valid_arguments(int ac, char **av);
-char				*join_function(int ac, char **av);
-char				**ft_split(char *str);
-void				free_split(char **split);
-int					ft_strlen(char *str);
-char				*ft_strdup(char *s1);
+int					is_valid_arg(int ac, char **av);
 int					ft_atoi(char *str);
 int					init_data(t_data *data, int ac, char **av);
 void				init_philosophers(t_data *data);

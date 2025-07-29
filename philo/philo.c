@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 03:07:28 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/29 00:33:14 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/29 04:12:13 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,25 +36,6 @@ void	ft_usleep(long time_in_ms, t_data *data)
 	}
 }
 
-static void	pars_function(int ac, char **av)
-{
-	char	**splited_arr;
-	char	*joined_str;
-
-	joined_str = join_function(ac, av);
-	if (!joined_str)
-		return (printf(RED "Error: while allocating\n" RESET), exit(1));
-	splited_arr = ft_split(joined_str);
-	if (!splited_arr)
-		return (free(joined_str), printf(RED "Error: while allocating\n" RESET),
-			exit(1));
-	free(joined_str);
-	if (!valid_arguments(ac, splited_arr))
-		return (free_split(splited_arr),
-			printf(RED "Error: invalid argument(s).\n" RESET), exit(1));
-	free_split(splited_arr);
-}
-
 int	main(int ac, char **av)
 {
 	t_data	data;
@@ -62,7 +43,9 @@ int	main(int ac, char **av)
 	memset(&data, 0, sizeof(t_data));
 	if (ac > 6 || ac < 5)
 		return (printf(RED "Error: invalid argument(s).\n" RESET), 1);
-	pars_function(ac, av);
+	if (!is_valid_arg(ac, av))
+		return (printf(RED "Error : An or More Arguments not valid!\n" RESET),
+			1);
 	if (!init_data(&data, ac, av))
 		return (printf(RED "Error: Initialization failed.\n" RESET), 1);
 	init_philosophers(&data);
