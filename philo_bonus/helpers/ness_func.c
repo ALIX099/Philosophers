@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 19:10:31 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/29 01:35:34 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/29 04:04:21 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ft_atoi(char *str)
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		result = result * 10 + (str[i++] - '0');
-		if ((mul == 1 && result > INT_MAX) || (mul == -1 && -result < INT_MIN))
+		if ((mul == 1 && result > INT_MAX) || (mul == -1 && - result < INT_MIN))
 			return (-2);
 	}
 	return ((int)(result * mul));
