@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:11:14 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/27 18:49:03 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/29 00:34:48 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	*check_meal_death(void *arg)
 		}
 		if (meals_check(data))
 			return (NULL);
-		ft_usleep(1, data);
+		usleep(500);
 	}
 	return (NULL);
 }
@@ -77,7 +77,7 @@ void	*philosophers(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->philo_id % 2 == 0)
-		ft_usleep(1, philo->data);
+		usleep(500);
 	while (1)
 	{
 		pthread_mutex_lock(&philo->data->mutex);

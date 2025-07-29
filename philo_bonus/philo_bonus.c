@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 19:18:51 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/28 20:34:37 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/29 01:12:44 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_usleep(t_data *data, long time)
 	long	start;
 
 	start = timestamp_in_ms();
-	while ((timestamp_in_ms() - start < time) && !check_state(data))
+	while ((timestamp_in_ms() - start < time) && !data->someone_died)
 		usleep(500);
 }
 
@@ -35,63 +35,20 @@ int	get_philo_id(t_philo *philos, pid_t pid)
 	return (0);
 }
 
-void	wait_for_children(t_data *data)
-{
-	int		i;
-	int		status;
-	pid_t	pid;
-	long	died_time;
-
-	pid = 1;
-	i = 0;
-	while (pid > 0)
-	{
-		pid = waitpid(-1, &status, 0);
-		died_time = timestamp_in_ms() - data->start_time;
-		if (WIFEXITED(status) && (WEXITSTATUS(status) == EXIT_FAILURE))
-		{
-			sem_wait(data->sem_print);
-			printf("%ld %d %s\n", died_time, get_philo_id(data->philos, pid),
-				"died");
-			while (i < data->n_philos)
-				kill(data->philos[i++].pid, SIGKILL);
-			break ;
-		}
-	}
-	while (waitpid(-1, NULL, 0) > 0)
-		;
-}
-
-void	init_philosophers(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->n_philos)
-	{
-		data->philos[i].pid = fork();
-		if (data->philos[i].pid == -1)
-			print_error("fork failed\n", data);
-		else if (data->philos[i].pid == 0)
-			philo_routine(&data->philos[i]);
-		i++;
-	}
-	wait_for_children(data);
-}
-
-int	main(int ac, char *av[])
+int	main(int ac, char **av)
 {
 	t_data	data;
 
 	if (ac > 6 || ac < 5)
-		return (printf(RED "Error : The arguments number not valid!\n"), 1);
+		return (printf(RED "Error : The arguments number not valid!\n" RESET),
+			1);
 	if (!is_valid_arg(ac, av))
-		return (printf(RED "Error : An or More Arguments not valid!\n"), 1);
+		return (printf(RED "Error : An or More Arguments not valid!\n" RESET),
+			1);
 	memset(&data, 0, sizeof(t_data));
 	init_data(&data, ac, av);
-	init_semaphores(&data);
 	data.start_time = timestamp_in_ms();
-	init_philosophers(&data);
-	clear_data(&data);
+	init_proc(&data);
+	ft_cleanup(&data);
 	return (0);
 }

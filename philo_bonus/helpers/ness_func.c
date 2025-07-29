@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   helpers_bonus.c                                    :+:      :+:    :+:   */
+/*   ness_func.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 19:10:31 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/28 20:19:35 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/29 00:56:35 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,10 @@ int	ft_atoi(char *str)
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		result = result * 10 + (str[i++] - '0');
-		if ((mul == 1 && result > INT_MAX) || (mul == -1 && - result < INT_MIN))
+		if ((mul == 1 && result > INT_MAX) || (mul == -1 && -result < INT_MIN))
 			return (INT_MAX - 1);
 	}
 	return ((int)(result * mul));
-}
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s && s[i])
-		i++;
-	return (i);
 }
 
 long	timestamp_in_ms(void)
@@ -57,32 +47,25 @@ long	timestamp_in_ms(void)
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
-void	clear_data(t_data *data)
+void	ft_cleanup(t_data *data)
 {
 	if (!data)
 		return ;
 	if (data->forks)
 		sem_close(data->forks);
-	sem_unlink(SEM_NAME);
+	sem_unlink("/forks");
 	if (data->sem_print)
 		sem_close(data->sem_print);
-	sem_unlink(SEM_PRINT);
+	sem_unlink("/print");
 	if (data->sem_meal)
 		sem_close(data->sem_meal);
-	sem_unlink(SEM_MEAL);
+	sem_unlink("/sem_meal");
 	if (data->state)
 		sem_close(data->state);
-	sem_unlink(SEM_ROOM);
-	if (data->sem_stop)
-		sem_close(data->sem_stop);
-	sem_unlink(SEM_STOP);
+	sem_unlink("/state");
+	if (data->died_sem)
+		sem_close(data->died_sem);
+	sem_unlink("/died_sem");
 	if (data->philos)
 		free(data->philos);
-}
-
-void	print_error(char *msg, t_data *data)
-{
-	write(2, msg, ft_strlen(msg));
-	clear_data(data);
-	exit(EXIT_FAILURE);
 }

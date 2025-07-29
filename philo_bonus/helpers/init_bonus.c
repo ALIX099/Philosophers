@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 19:12:07 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/28 20:14:33 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/29 01:13:36 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,22 @@
 
 void	init_semaphores(t_data *data)
 {
-	sem_unlink(SEM_NAME);
-	sem_unlink(SEM_STOP);
-	sem_unlink(SEM_PRINT);
-	sem_unlink(SEM_MEAL);
-	sem_unlink(SEM_ROOM);
-	data->forks = sem_open(SEM_NAME, O_CREAT | O_EXCL, 0644, data->n_philos);
-	data->sem_stop = sem_open(SEM_STOP, O_CREAT | O_EXCL, 0644, 1);
-	data->sem_print = sem_open(SEM_PRINT, O_CREAT | O_EXCL, 0644, 1);
-	data->sem_meal = sem_open(SEM_MEAL, O_CREAT | O_EXCL, 0644, 1);
-	data->state = sem_open(SEM_ROOM, O_CREAT | O_EXCL, 0644, 1);
+	sem_unlink("/forks");
+	sem_unlink("/died_sem");
+	sem_unlink("/print");
+	sem_unlink("/meal_sem");
+	sem_unlink("/state");
+	data->forks = sem_open("/forks", O_CREAT, 0644, data->n_philos);
+	data->died_sem = sem_open("/died_sem", O_CREAT, 0644, 1);
+	data->sem_print = sem_open("/print", O_CREAT, 0644, 1);
+	data->sem_meal = sem_open("/meal_sem", O_CREAT, 0644, 1);
+	data->state = sem_open("/state", O_CREAT, 0644, 1);
 	if (data->forks == SEM_FAILED || data->sem_print == SEM_FAILED
 		|| data->sem_meal == SEM_FAILED || data->state == SEM_FAILED
-		|| data->sem_stop == SEM_FAILED)
-		print_error("open semaphores fails\n", data);
+		|| data->died_sem == SEM_FAILED)
+		return (ft_cleanup(data),
+			printf(RED "Error : While Openning Sem!\n" RESET),
+			exit(EXIT_FAILURE));
 }
 
 static void	init_philos(t_data *data)
@@ -56,16 +58,61 @@ void	init_data(t_data *data, int ac, char **av)
 	{
 		data->max_meals = ft_atoi(av[5]);
 		if (data->max_meals <= 0 || data->max_meals == INT_MAX - 1)
-			return (printf(RED "Error : An argument is unacceptable\n"),
+			return (printf(RED "Error : An argument is unacceptable\n" RESET),
 				exit(EXIT_FAILURE));
 	}
-	if (data->n_philos <= 0 || data->time_to_die <= 0 || data->time_to_eat <= 0
-		|| data->time_to_sleep <= 0)
-		return (printf(RED "Error : An argument is unacceptable\n"), exit(1));
+	if (data->n_philos <= 0 || data->n_philos == INT_MAX - 1
+		|| data->time_to_die <= 0 || data->time_to_die == INT_MAX - 1
+		|| data->time_to_eat <= 0 || data->time_to_eat == INT_MAX - 1
+		|| data->time_to_sleep <= 0 || data->time_to_sleep == INT_MAX - 1)
+		return (printf(RED "Error : An argument is unacceptable\n" RESET),
+			exit(1));
 	init_semaphores(data);
 	data->philos = (t_philo *)malloc(sizeof(t_philo) * data->n_philos);
 	if (!data->philos)
-		return (clear_data(data), printf(RED "Error : While Allocating\n"),
-			exit(EXIT_FAILURE));
+		return (ft_cleanup(data),
+			printf(RED "Error : While Allocating\n" RESET), exit(EXIT_FAILURE));
 	init_philos(data);
+}
+
+void	wait_for_children(t_data *data)
+{
+	int		status;
+	pid_t	pid;
+	long	died_time;
+
+	while ((pid = waitpid(-1, &status, 0)) > 0)
+	{
+		if (WIFEXITED(status) && WEXITSTATUS(status) == EXIT_FAILURE)
+		{
+			died_time = timestamp_in_ms() - data->start_time;
+			assign_death_flag(data);
+			kill_all(data);
+			sem_wait(data->sem_print);
+			printf("%ld %d died\n", died_time, get_philo_id(data->philos, pid));
+			sem_post(data->sem_print);
+			break ;
+		}
+	}
+	while (waitpid(-1, NULL, 0) > 0)
+	{
+	}
+}
+
+void	init_proc(t_data *data)
+{
+	int i;
+
+	i = -1;
+	while (++i < data->n_philos)
+	{
+		data->philos[i].pid = fork();
+		if (data->philos[i].pid == -1)
+			return (ft_cleanup(data),
+				printf(RED "Error : Creating child process\n" RESET),
+				exit(EXIT_FAILURE));
+		if (data->philos[i].pid == 0)
+			simulation(&data->philos[i]);
+	}
+	wait_for_children(data);
 }

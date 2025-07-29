@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 19:21:46 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/28 20:13:47 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/29 01:12:35 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,6 @@
 # define RED "\033[0;31m"
 # define RESET "\033[0m"
 
-# define SEM_NAME "/philo_sem"
-# define SEM_STOP "/sem_stop"
-# define SEM_PRINT "/sem_print"
-# define SEM_MEAL "/sem_meal"
-# define SEM_ROOM "/sem_room"
-
 typedef struct s_philo
 {
 	int				philo_id;
@@ -53,9 +47,9 @@ typedef struct s_data
 	long			time_to_sleep;
 	long			start_time;
 	int				max_meals;
-	int				stop;
+	int				someone_died;
 	sem_t			*forks;
-	sem_t			*sem_stop;
+	sem_t			*died_sem;
 	sem_t			*sem_print;
 	sem_t			*sem_meal;
 	sem_t			*state;
@@ -65,18 +59,17 @@ typedef struct s_data
 int					ft_atoi(char *str);
 long				timestamp_in_ms(void);
 int					is_valid_arg(int ac, char **av);
-void				print_error(char *msg, t_data *data);
-void				clear_data(t_data *data);
-size_t				ft_strlen(const char *s);
+void				ft_cleanup(t_data *data);
 void				init_data(t_data *data, int ac, char **av);
 void				init_semaphores(t_data *data);
-void				philo_routine(t_philo *philo);
+void				simulation(t_philo *philo);
 void				ft_usleep(t_data *data, long duration);
-void				set_stop(t_data *data);
-void				*monitor(void *arg);
-int					check_state(t_data *data);
+void				assign_death_flag(t_data *data);
+void				*cycle(void *arg);
+void				init_proc(t_data *data);
 void				clean_exit(t_philo *philo, int status);
-void				print_status(t_philo *philo, char *msg);
-pthread_t			call_monitor(t_philo *philo, void *monitor(void *));
+void				safe_print(t_philo *philo, const char *msg);
+int					get_philo_id(t_philo *philos, pid_t pid);
+void				kill_all(t_data *data);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
+/*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 01:34:18 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/25 00:01:01 by macbookpro       ###   ########.fr       */
+/*   Updated: 2025/07/29 00:32:19 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,19 @@ int	init_data(t_data *data, int ac, char **av)
 	data->start_time = timestamp_in_ms();
 	data->max_meals = -1;
 	if (ac > 5)
+	{
 		data->max_meals = ft_atoi(av[5]);
-	if (data->n_philos <= 0 || data->time_to_die <= 0 || data->time_to_eat <= 0
-		|| data->time_to_sleep <= 0)
+		if (data->max_meals <= 0 || data->max_meals == INT_MAX - 1)
+			return (0);
+	}
+	if (data->n_philos <= 0 || data->n_philos == INT_MAX - 1
+		|| data->time_to_die <= 0 || data->time_to_die == INT_MAX - 1
+		|| data->time_to_eat <= 0 || data->time_to_eat == INT_MAX - 1
+		|| data->time_to_sleep <= 0 || data->time_to_sleep == INT_MAX - 1)
 		return (0);
-	data->someone_died = 0;
 	data->forks = init_forks(data);
 	if (!data->forks)
 		return (0);
-	data->print_mutex_init = 0;
 	if (pthread_mutex_init(&data->mutex, NULL) != 0)
 		return (cleanup(data), 0);
 	data->print_mutex_init = 1;

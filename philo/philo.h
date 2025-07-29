@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 03:07:34 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/26 16:52:54 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/29 00:32:39 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <unistd.h>
+# include <string.h>
 
 # define RED "\033[0;31m"
 # define RESET "\033[0m"
