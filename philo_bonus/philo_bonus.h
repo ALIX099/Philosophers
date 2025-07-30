@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 19:21:46 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/30 04:45:48 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/30 04:55:24 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_data
 	t_philo			*philos;
 }					t_data;
 
-int					ft_atoi(char *str);
+int					ft_atoi(const char *str);
 long				timestamp_in_ms(void);
 int					is_valid_arg(int ac, char **av);
 void				ft_cleanup(t_data *data);
@@ -66,7 +66,7 @@ void				assign_death_flag(t_data *data);
 void				*cycle(void *arg);
 void				init_proc(t_data *data);
 void				safe_print(t_philo *philo, const char *msg);
-int					get_philo_id(t_philo *philos, pid_t pid);
+int					philo_id(t_philo *philos, pid_t pid);
 void				kill_all(t_data *data);
 
 #endif

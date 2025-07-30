@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 19:12:07 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/30 04:32:39 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/30 04:57:26 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	init_data(t_data *data, int ac, char **av)
 	init_philos(data);
 }
 
-void	wait_for_children(t_data *data)
+void	wait_child(t_data *data)
 {
 	int		status;
 	pid_t	pid;
@@ -89,7 +89,7 @@ void	wait_for_children(t_data *data)
 			kill_all(data);
 			died_time = timestamp_in_ms() - data->start_time;
 			sem_wait(data->sem_print);
-			printf("%ld %d died\n", died_time, get_philo_id(data->philos, pid));
+			printf("%ld %d died\n", died_time, philo_id(data->philos, pid));
 			sem_post(data->sem_print);
 			break ;
 		}
@@ -114,5 +114,5 @@ void	init_proc(t_data *data)
 		if (data->philos[i].pid == 0)
 			simulation(&data->philos[i]);
 	}
-	wait_for_children(data);
+	wait_child(data);
 }

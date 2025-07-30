@@ -6,13 +6,13 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 19:10:31 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/30 01:37:19 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/30 04:55:10 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo_bonus.h"
 
-int	ft_atoi(char *str)
+int	ft_atoi(const char *str)
 {
 	int			mul;
 	int			i;
@@ -78,7 +78,7 @@ void	safe_print(t_philo *philo, const char *msg)
 	sem_post(philo->data->sem_print);
 }
 
-int	get_philo_id(t_philo *philos, pid_t pid)
+int	philo_id(t_philo *philos, pid_t pid)
 {
 	int	i;
 	int	n;
