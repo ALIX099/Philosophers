@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 19:12:07 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/30 05:16:07 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/30 06:11:07 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,12 @@ void	init_proc(t_data *data)
 				printf(RED "Error : Creating child process\n" RESET),
 				exit(EXIT_FAILURE));
 		if (data->philos[i].pid == 0)
-			simulation(&data->philos[i]);
+		{
+			if (data->n_philos == 1)
+				one_philo(&data->philos[0]);
+			else
+				simulation(&data->philos[i]);
+		}
 	}
 	wait_child(data);
 }
@@ -112,9 +117,9 @@ static void	init_semaphores(t_data *data)
 	data->sem_print = sem_open("/print", O_CREAT, 0644, 1);
 	data->meal_sem = sem_open("/meal_sem", O_CREAT, 0644, 1);
 	data->state = sem_open("/state", O_CREAT, 0644, 1);
-	if (data->forks == SEM_FAILED || data->sem_print == SEM_FAILED
-		|| data->meal_sem == SEM_FAILED || data->state == SEM_FAILED
-		|| data->died_sem == SEM_FAILED)
+	if (data->forks == ((sem_t *) 0) || data->sem_print == ((sem_t *) 0)
+		|| data->meal_sem == ((sem_t *) 0) || data->state == ((sem_t *) 0)
+		|| data->died_sem == ((sem_t *) 0))
 		return (ft_cleanup(data),
 			printf(RED "Error : While Openning Sem!\n" RESET),
 			exit(EXIT_FAILURE));

@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 19:10:31 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/30 05:08:08 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/30 05:31:28 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ long	timestamp_in_ms(void)
 
 void	ft_cleanup(t_data *data)
 {
+	kill_all(data);
 	if (data->forks)
 		sem_close(data->forks);
 	sem_unlink("/forks");

@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 19:21:18 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/30 05:10:13 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/30 06:12:06 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,18 @@ void	assign_death_flag(t_data *data)
 	sem_post(data->died_sem);
 }
 
+void	one_philo(t_philo *philo)
+{
+	t_data	*data;
+
+	data = philo->data;
+	sem_wait(data->forks);
+	safe_print(philo, "has taken a fork");
+	ft_usleep(data, data->time_to_die);
+	sem_post(data->forks);
+	exit(EXIT_FAILURE);
+}
+
 void	eating(t_philo *philo)
 {
 	sem_wait(philo->data->state);
@@ -26,6 +38,13 @@ void	eating(t_philo *philo)
 	safe_print(philo, "has taken a fork");
 	sem_wait(philo->data->forks);
 	safe_print(philo, "has taken a fork");
+	if (philo->data->someone_died)
+	{
+		sem_post(philo->data->state);
+		sem_post(philo->data->forks);
+		sem_post(philo->data->forks);
+		return ;
+	}
 	sem_wait(philo->data->meal_sem);
 	philo->last_meal_time = timestamp_in_ms();
 	philo->meals_eaten++;
@@ -54,7 +73,7 @@ void	*cycle(void *arg)
 			return (sem_post(philo->data->meal_sem),
 				assign_death_flag(philo->data), (void *)0);
 		sem_post(philo->data->meal_sem);
-		usleep(500);
+		usleep(100);
 	}
 	return (NULL);
 }
@@ -64,14 +83,6 @@ void	simulation(t_philo *philo)
 	pthread_t	thread;
 	void		*death_detect;
 
-	if (philo->data->n_philos == 1)
-	{
-		sem_wait(philo->data->forks);
-		safe_print(philo, "has taken a fork");
-		ft_usleep(philo->data, philo->data->time_to_die);
-		sem_post(philo->data->forks);
-		exit(EXIT_FAILURE);
-	}
 	if (pthread_create(&thread, NULL, cycle, philo))
 		return (ft_cleanup(philo->data), exit(-1));
 	while (!philo->data->someone_died)
