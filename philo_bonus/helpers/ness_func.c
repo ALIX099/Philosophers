@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 19:10:31 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/30 04:55:10 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/30 05:08:08 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,18 @@ void	ft_cleanup(t_data *data)
 
 void	safe_print(t_philo *philo, const char *msg)
 {
-	if (philo->data->someone_died)
+	t_data	*data;
+
+	data = philo->data;
+	sem_wait(data->sem_print);
+	if (data->someone_died)
+	{
+		sem_post(data->sem_print);
 		return ;
-	sem_wait(philo->data->sem_print);
-	printf("%ld %d %s\n", timestamp_in_ms() - philo->data->start_time,
-		philo->philo_id, msg);
-	sem_post(philo->data->sem_print);
+	}
+	printf("%ld %d %s\n", timestamp_in_ms() - data->start_time, philo->philo_id,
+		msg);
+	sem_post(data->sem_print);
 }
 
 int	philo_id(t_philo *philos, pid_t pid)

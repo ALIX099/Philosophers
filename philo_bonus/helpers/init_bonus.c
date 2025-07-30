@@ -6,31 +6,13 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 19:12:07 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/30 04:57:26 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/30 05:08:01 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo_bonus.h"
 
-void	init_semaphores(t_data *data)
-{
-	sem_unlink("/forks");
-	sem_unlink("/died_sem");
-	sem_unlink("/print");
-	sem_unlink("/meal_sem");
-	sem_unlink("/state");
-	data->forks = sem_open("/forks", O_CREAT, 0644, data->n_philos);
-	data->died_sem = sem_open("/died_sem", O_CREAT, 0644, 1);
-	data->sem_print = sem_open("/print", O_CREAT, 0644, 1);
-	data->meal_sem = sem_open("/meal_sem", O_CREAT, 0644, 1);
-	data->state = sem_open("/state", O_CREAT, 0644, 1);
-	if (data->forks == SEM_FAILED || data->sem_print == SEM_FAILED
-		|| data->meal_sem == SEM_FAILED || data->state == SEM_FAILED
-		|| data->died_sem == SEM_FAILED)
-		return (ft_cleanup(data),
-			printf(RED "Error : While Openning Sem!\n" RESET),
-			exit(EXIT_FAILURE));
-}
+static void	init_semaphores(t_data *data);
 
 static void	init_philos(t_data *data)
 {
@@ -115,4 +97,24 @@ void	init_proc(t_data *data)
 			simulation(&data->philos[i]);
 	}
 	wait_child(data);
+}
+
+static void	init_semaphores(t_data *data)
+{
+	sem_unlink("/forks");
+	sem_unlink("/died_sem");
+	sem_unlink("/print");
+	sem_unlink("/meal_sem");
+	sem_unlink("/state");
+	data->forks = sem_open("/forks", O_CREAT, 0644, data->n_philos);
+	data->died_sem = sem_open("/died_sem", O_CREAT, 0644, 1);
+	data->sem_print = sem_open("/print", O_CREAT, 0644, 1);
+	data->meal_sem = sem_open("/meal_sem", O_CREAT, 0644, 1);
+	data->state = sem_open("/state", O_CREAT, 0644, 1);
+	if (data->forks == SEM_FAILED || data->sem_print == SEM_FAILED
+		|| data->meal_sem == SEM_FAILED || data->state == SEM_FAILED
+		|| data->died_sem == SEM_FAILED)
+		return (ft_cleanup(data),
+			printf(RED "Error : While Openning Sem!\n" RESET),
+			exit(EXIT_FAILURE));
 }

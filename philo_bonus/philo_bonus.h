@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 19:21:46 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/30 04:55:24 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/30 05:09:50 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ long				timestamp_in_ms(void);
 int					is_valid_arg(int ac, char **av);
 void				ft_cleanup(t_data *data);
 void				init_data(t_data *data, int ac, char **av);
-void				init_semaphores(t_data *data);
 void				simulation(t_philo *philo);
 void				ft_usleep(t_data *data, long time_in_ms);
 void				assign_death_flag(t_data *data);
