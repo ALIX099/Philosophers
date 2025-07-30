@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 19:12:07 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/30 05:08:01 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/30 05:16:07 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	init_proc(t_data *data)
 	int	i;
 
 	i = -1;
+	data->start_time = timestamp_in_ms();
 	while (++i < data->n_philos)
 	{
 		data->philos[i].pid = fork();

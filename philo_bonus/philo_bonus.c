@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 19:18:51 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/29 23:52:37 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/30 05:15:51 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ int	main(int ac, char **av)
 			1);
 	memset(&data, 0, sizeof(t_data));
 	init_data(&data, ac, av);
-	data.start_time = timestamp_in_ms();
 	init_proc(&data);
 	ft_cleanup(&data);
 	return (0);
