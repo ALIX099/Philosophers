@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simulation_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
+/*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 19:21:18 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/29 12:29:08 by macbookpro       ###   ########.fr       */
+/*   Updated: 2025/07/30 01:30:48 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 void	assign_death_flag(t_data *data)
 {
 	sem_wait(data->died_sem);
-	if (!data->someone_died)
-		data->someone_died = 1;
+	data->someone_died = 1;
 	sem_post(data->died_sem);
 }
 
@@ -27,15 +26,13 @@ void	eating(t_philo *philo)
 	safe_print(philo, "has taken a fork");
 	sem_wait(philo->data->forks);
 	safe_print(philo, "has taken a fork");
-	sem_post(philo->data->state);
-	sem_wait(philo->data->sem_meal);
+	sem_wait(philo->data->meal_sem);
 	philo->last_meal_time = timestamp_in_ms();
-	sem_post(philo->data->sem_meal);
+	philo->meals_eaten++;
+	sem_post(philo->data->meal_sem);
+	sem_post(philo->data->state);
 	safe_print(philo, "is eating");
 	ft_usleep(philo->data, philo->data->time_to_eat);
-	sem_wait(philo->data->sem_meal);
-	philo->meals_eaten++;
-	sem_post(philo->data->sem_meal);
 	sem_post(philo->data->forks);
 	sem_post(philo->data->forks);
 }
@@ -43,27 +40,20 @@ void	eating(t_philo *philo)
 void	*cycle(void *arg)
 {
 	t_philo	*philo;
-	long	now;
 
 	philo = (t_philo *)arg;
 	while (1)
 	{
-		sem_wait(philo->data->sem_meal);
-		now = timestamp_in_ms();
-		if (now - philo->last_meal_time > philo->data->time_to_die)
-		{
-			assign_death_flag(philo->data);
-			sem_post(philo->data->sem_meal);
-			return ((void *)1);
-		}
+		sem_wait(philo->data->meal_sem);
+		if (timestamp_in_ms()
+			- philo->last_meal_time > philo->data->time_to_die)
+			return (sem_post(philo->data->meal_sem),
+				assign_death_flag(philo->data), exit(EXIT_FAILURE), NULL);
 		if (philo->meals_eaten >= philo->data->max_meals
-			&& philo->data->max_meals > -1)
-		{
-			assign_death_flag(philo->data);
-			sem_post(philo->data->sem_meal);
-			return (NULL);
-		}
-		sem_post(philo->data->sem_meal);
+			&& philo->data->max_meals >= 0)
+			return (sem_post(philo->data->meal_sem),
+				assign_death_flag(philo->data), exit(EXIT_SUCCESS), NULL);
+		sem_post(philo->data->meal_sem);
 		usleep(500);
 	}
 	return (NULL);
@@ -72,7 +62,6 @@ void	*cycle(void *arg)
 void	simulation(t_philo *philo)
 {
 	pthread_t	thread;
-	void		*res;
 
 	if (philo->data->n_philos == 1)
 	{
@@ -91,8 +80,5 @@ void	simulation(t_philo *philo)
 		ft_usleep(philo->data, philo->data->time_to_sleep);
 		safe_print(philo, "is thinking");
 	}
-	pthread_join(thread, &res);
-	if (res)
-		clean_exit(philo, EXIT_FAILURE);
-	clean_exit(philo, EXIT_SUCCESS);
+	pthread_join(thread, NULL);
 }

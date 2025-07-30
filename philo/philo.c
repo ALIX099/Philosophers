@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 03:07:28 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/29 04:12:13 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/29 23:17:48 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 void	ft_usleep(long time_in_ms, t_data *data)
 {
-	long long	start;
-	long long	current;
-	long long	elapsed;
+	long	start;
+	long	elapsed;
 
 	if (time_in_ms <= 0)
 		return ;
@@ -24,8 +23,7 @@ void	ft_usleep(long time_in_ms, t_data *data)
 	while (1)
 	{
 		pthread_mutex_lock(&data->mutex);
-		current = timestamp_in_ms();
-		elapsed = current - start;
+		elapsed = timestamp_in_ms() - start;
 		if (elapsed >= time_in_ms || data->someone_died)
 		{
 			pthread_mutex_unlock(&data->mutex);

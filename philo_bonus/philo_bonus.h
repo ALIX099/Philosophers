@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
+/*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 19:21:46 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/29 12:31:04 by macbookpro       ###   ########.fr       */
+/*   Updated: 2025/07/30 01:30:31 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct s_data
 	sem_t			*forks;
 	sem_t			*died_sem;
 	sem_t			*sem_print;
-	sem_t			*sem_meal;
+	sem_t			*meal_sem;
 	sem_t			*state;
 	t_philo			*philos;
 }					t_data;
@@ -63,11 +63,10 @@ void				ft_cleanup(t_data *data);
 void				init_data(t_data *data, int ac, char **av);
 void				init_semaphores(t_data *data);
 void				simulation(t_philo *philo);
-void				ft_usleep(t_data *data, long duration);
+void				ft_usleep(t_data *data, long time_in_ms);
 void				assign_death_flag(t_data *data);
 void				*cycle(void *arg);
 void				init_proc(t_data *data);
-void				clean_exit(t_philo *philo, int status);
 void				safe_print(t_philo *philo, const char *msg);
 int					get_philo_id(t_philo *philos, pid_t pid);
 void				kill_all(t_data *data);

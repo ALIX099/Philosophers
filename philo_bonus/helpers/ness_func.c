@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ness_func.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
+/*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 19:10:31 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/29 12:30:46 by macbookpro       ###   ########.fr       */
+/*   Updated: 2025/07/30 01:37:19 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,15 @@ long	timestamp_in_ms(void)
 
 void	ft_cleanup(t_data *data)
 {
-	if (!data)
-		return ;
 	if (data->forks)
 		sem_close(data->forks);
 	sem_unlink("/forks");
 	if (data->sem_print)
 		sem_close(data->sem_print);
 	sem_unlink("/print");
-	if (data->sem_meal)
-		sem_close(data->sem_meal);
-	sem_unlink("/sem_meal");
+	if (data->meal_sem)
+		sem_close(data->meal_sem);
+	sem_unlink("/meal_sem");
 	if (data->state)
 		sem_close(data->state);
 	sem_unlink("/state");
@@ -68,4 +66,27 @@ void	ft_cleanup(t_data *data)
 	sem_unlink("/died_sem");
 	if (data->philos)
 		free(data->philos);
+}
+
+void	safe_print(t_philo *philo, const char *msg)
+{
+	if (philo->data->someone_died)
+		return ;
+	sem_wait(philo->data->sem_print);
+	printf("%ld %d %s\n", timestamp_in_ms() - philo->data->start_time,
+		philo->philo_id, msg);
+	sem_post(philo->data->sem_print);
+}
+
+int	get_philo_id(t_philo *philos, pid_t pid)
+{
+	int	i;
+	int	n;
+
+	i = -1;
+	n = philos->data->n_philos;
+	while (++i < n)
+		if (philos[i].pid == pid)
+			return (philos[i].philo_id);
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
+/*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 19:12:07 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/29 12:30:39 by macbookpro       ###   ########.fr       */
+/*   Updated: 2025/07/30 01:30:56 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ void	init_semaphores(t_data *data)
 	data->forks = sem_open("/forks", O_CREAT, 0644, data->n_philos);
 	data->died_sem = sem_open("/died_sem", O_CREAT, 0644, 1);
 	data->sem_print = sem_open("/print", O_CREAT, 0644, 1);
-	data->sem_meal = sem_open("/meal_sem", O_CREAT, 0644, 1);
+	data->meal_sem = sem_open("/meal_sem", O_CREAT, 0644, 1);
 	data->state = sem_open("/state", O_CREAT, 0644, 1);
 	if (data->forks == SEM_FAILED || data->sem_print == SEM_FAILED
-		|| data->sem_meal == SEM_FAILED || data->state == SEM_FAILED
+		|| data->meal_sem == SEM_FAILED || data->state == SEM_FAILED
 		|| data->died_sem == SEM_FAILED)
 		return (ft_cleanup(data),
 			printf(RED "Error : While Openning Sem!\n" RESET),
@@ -83,11 +83,11 @@ void	wait_for_children(t_data *data)
 	while (pid > 0)
 	{
 		pid = waitpid(-1, &status, 0);
-		if (WIFEXITED(status) && WEXITSTATUS(status) == EXIT_FAILURE)
+		if (WIFEXITED(status) && WEXITSTATUS(status) == 1)
 		{
-			died_time = timestamp_in_ms() - data->start_time;
 			assign_death_flag(data);
 			kill_all(data);
+			died_time = timestamp_in_ms() - data->start_time;
 			sem_wait(data->sem_print);
 			printf("%ld %d died\n", died_time, get_philo_id(data->philos, pid));
 			sem_post(data->sem_print);
