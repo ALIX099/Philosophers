@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 19:21:18 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/30 01:30:48 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/30 04:52:46 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	eating(t_philo *philo)
 	sem_wait(philo->data->meal_sem);
 	philo->last_meal_time = timestamp_in_ms();
 	philo->meals_eaten++;
-	sem_post(philo->data->meal_sem);
 	sem_post(philo->data->state);
+	sem_post(philo->data->meal_sem);
 	safe_print(philo, "is eating");
 	ft_usleep(philo->data, philo->data->time_to_eat);
 	sem_post(philo->data->forks);
@@ -48,11 +48,11 @@ void	*cycle(void *arg)
 		if (timestamp_in_ms()
 			- philo->last_meal_time > philo->data->time_to_die)
 			return (sem_post(philo->data->meal_sem),
-				assign_death_flag(philo->data), exit(EXIT_FAILURE), NULL);
+				assign_death_flag(philo->data), (void *)1);
 		if (philo->meals_eaten >= philo->data->max_meals
 			&& philo->data->max_meals >= 0)
 			return (sem_post(philo->data->meal_sem),
-				assign_death_flag(philo->data), exit(EXIT_SUCCESS), NULL);
+				assign_death_flag(philo->data), (void *)0);
 		sem_post(philo->data->meal_sem);
 		usleep(500);
 	}
@@ -62,6 +62,7 @@ void	*cycle(void *arg)
 void	simulation(t_philo *philo)
 {
 	pthread_t	thread;
+	void		*death_detect;
 
 	if (philo->data->n_philos == 1)
 	{
@@ -72,7 +73,7 @@ void	simulation(t_philo *philo)
 		exit(EXIT_FAILURE);
 	}
 	if (pthread_create(&thread, NULL, cycle, philo))
-		return (ft_cleanup(philo->data), exit(EXIT_FAILURE));
+		return (ft_cleanup(philo->data), exit(-1));
 	while (!philo->data->someone_died)
 	{
 		eating(philo);
@@ -80,5 +81,8 @@ void	simulation(t_philo *philo)
 		ft_usleep(philo->data, philo->data->time_to_sleep);
 		safe_print(philo, "is thinking");
 	}
-	pthread_join(thread, NULL);
+	pthread_join(thread, &death_detect);
+	if (death_detect == (void *)1)
+		exit(EXIT_FAILURE);
+	exit(EXIT_SUCCESS);
 }

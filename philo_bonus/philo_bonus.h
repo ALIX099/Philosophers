@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 19:21:46 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/30 01:30:31 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/30 04:45:48 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-# include <sys/stat.h>
 # include <sys/time.h>
-# include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
 
