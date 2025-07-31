@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 19:21:18 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/31 06:42:50 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/31 06:46:12 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	*cycle(void *arg)
 					- philo->data->start_time, philo->philo_id);
 				(assign_death_flag(philo->data), exit(EXIT_FAILURE));
 			}
-			return ((void *)1);
 		}
 		if (philo->meals_eaten >= philo->data->max_meals
 			&& philo->data->max_meals >= 0)
