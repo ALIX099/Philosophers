@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 19:12:07 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/31 05:57:44 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/31 06:37:59 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ void	wait_child(t_data *data)
 			break ;
 		}
 	}
-	//while (waitpid(0, NULL, 0) > 0)
-	//{
-	//}
+	while (waitpid(0, NULL, 0) > 0)
+	{
+	}
 }
 
 void	init_proc(t_data *data)

@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 19:21:46 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/31 05:23:18 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/31 06:39:47 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,8 @@ void				assign_death_flag(t_data *data);
 void				*cycle(void *arg);
 void				init_proc(t_data *data);
 int					safe_print(t_philo *philo, const char *msg);
-int					philo_id(t_philo *philos, pid_t pid);
 void				kill_all(t_data *data);
 void				one_philo(t_philo *philo);
-int 				check_death(t_data *data);
+int					check_death(t_data *data);
 
 #endif

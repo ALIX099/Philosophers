@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 19:21:18 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/31 06:32:25 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/31 06:42:50 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,6 @@ void	assign_death_flag(t_data *data)
 	sem_post(data->died_sem);
 }
 
-int	check_death(t_data *data)
-{
-	int	result;
-
-	sem_wait(data->died_sem);
-	result = data->someone_died;
-	sem_post(data->died_sem);
-	return (result);
-}
 void	one_philo(t_philo *philo)
 {
 	t_data	*data;
@@ -72,13 +63,9 @@ void	*cycle(void *arg)
 			sem_post(philo->data->meal_sem);
 			if (sem_wait(philo->data->sem_print) == 0)
 			{
-				if (!check_death(philo->data))
-				{
-					printf("%ld %d died\n", timestamp_in_ms()
-						- philo->data->start_time, philo->philo_id);
-					assign_death_flag(philo->data);
-					exit(EXIT_FAILURE);
-				}
+				printf("%ld %d died\n", timestamp_in_ms()
+					- philo->data->start_time, philo->philo_id);
+				(assign_death_flag(philo->data), exit(EXIT_FAILURE));
 			}
 			return ((void *)1);
 		}
@@ -86,8 +73,7 @@ void	*cycle(void *arg)
 			&& philo->data->max_meals >= 0)
 			return (sem_post(philo->data->meal_sem),
 				assign_death_flag(philo->data), (void *)0);
-		sem_post(philo->data->meal_sem);
-		usleep(100);
+		(sem_post(philo->data->meal_sem), usleep(100));
 	}
 	return (NULL);
 }
@@ -95,7 +81,6 @@ void	*cycle(void *arg)
 void	simulation(t_philo *philo)
 {
 	pthread_t	thread;
-	void		*death_detect;
 
 	if (pthread_create(&thread, NULL, cycle, philo))
 		return (ft_cleanup(philo->data), exit(-1));
@@ -104,13 +89,11 @@ void	simulation(t_philo *philo)
 		eating(philo);
 		usleep(100);
 		if (!safe_print(philo, "is sleeping"))
-			break;
+			break ;
 		ft_usleep(philo->data, philo->data->time_to_sleep);
 		if (!safe_print(philo, "is thinking"))
-			break;
+			break ;
 	}
-	pthread_join(thread, &death_detect);
-	if (death_detect == (void *)1)
-		exit(EXIT_FAILURE);
+	pthread_join(thread, NULL);
 	exit(EXIT_SUCCESS);
 }

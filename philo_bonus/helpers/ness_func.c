@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/19 19:10:31 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/31 06:36:14 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/31 06:39:35 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ft_atoi(const char *str)
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		result = result * 10 + (str[i++] - '0');
-		if ((mul == 1 && result > INT_MAX) || (mul == -1 && -result < INT_MIN))
+		if ((mul == 1 && result > INT_MAX) || (mul == -1 && - result < INT_MIN))
 			return (-2);
 	}
 	return ((int)(result * mul));
@@ -83,22 +83,20 @@ int	safe_print(t_philo *philo, const char *msg)
 		sem_post(data->sem_print);
 		return (0);
 	}
-	printf("%ld %d %s\n", timestamp_in_ms() - data->start_time, philo->philo_id, msg);
+	printf("%ld %d %s\n", timestamp_in_ms() - data->start_time, philo->philo_id,
+		msg);
 	sem_post(data->sem_print);
 	if (check_death(data))
 		return (0);
 	return (1);
 }
 
-int	philo_id(t_philo *philos, pid_t pid)
+int	check_death(t_data *data)
 {
-	int	i;
-	int	n;
+	int	result;
 
-	i = -1;
-	n = philos->data->n_philos;
-	while (++i < n)
-		if (philos[i].pid == pid)
-			return (philos[i].philo_id);
-	return (0);
+	sem_wait(data->died_sem);
+	result = data->someone_died;
+	sem_post(data->died_sem);
+	return (result);
 }
