@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 19:18:51 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/30 05:54:01 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/31 05:17:54 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_usleep(t_data *data, long time_in_ms)
 	if (time_in_ms <= 0)
 		return ;
 	start = timestamp_in_ms();
-	while ((timestamp_in_ms() - start < time_in_ms) && !data->someone_died)
+	while ((timestamp_in_ms() - start < time_in_ms) && !check_death(data))
 		usleep(100);
 }
 

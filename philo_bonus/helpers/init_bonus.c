@@ -6,7 +6,7 @@
 /*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 19:12:07 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/30 06:11:07 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/07/31 05:57:44 by abouknan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,26 +59,21 @@ void	wait_child(t_data *data)
 {
 	int		status;
 	pid_t	pid;
-	long	died_time;
 
 	pid = 1;
 	while (pid > 0)
 	{
-		pid = waitpid(-1, &status, 0);
+		pid = waitpid(0, &status, 0);
 		if (WIFEXITED(status) && WEXITSTATUS(status) == 1)
 		{
 			assign_death_flag(data);
 			kill_all(data);
-			died_time = timestamp_in_ms() - data->start_time;
-			sem_wait(data->sem_print);
-			printf("%ld %d died\n", died_time, philo_id(data->philos, pid));
-			sem_post(data->sem_print);
 			break ;
 		}
 	}
-	while (waitpid(-1, NULL, 0) > 0)
-	{
-	}
+	//while (waitpid(0, NULL, 0) > 0)
+	//{
+	//}
 }
 
 void	init_proc(t_data *data)
@@ -117,9 +112,9 @@ static void	init_semaphores(t_data *data)
 	data->sem_print = sem_open("/print", O_CREAT, 0644, 1);
 	data->meal_sem = sem_open("/meal_sem", O_CREAT, 0644, 1);
 	data->state = sem_open("/state", O_CREAT, 0644, 1);
-	if (data->forks == ((sem_t *) 0) || data->sem_print == ((sem_t *) 0)
-		|| data->meal_sem == ((sem_t *) 0) || data->state == ((sem_t *) 0)
-		|| data->died_sem == ((sem_t *) 0))
+	if (data->forks == ((sem_t *)0) || data->sem_print == ((sem_t *)0)
+		|| data->meal_sem == ((sem_t *)0) || data->state == ((sem_t *)0)
+		|| data->died_sem == ((sem_t *)0))
 		return (ft_cleanup(data),
 			printf(RED "Error : While Openning Sem!\n" RESET),
 			exit(EXIT_FAILURE));
