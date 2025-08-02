@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 19:18:51 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/31 05:17:54 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/08/02 16:15:44 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int ac, char **av)
 		return (printf(RED "Error : The arguments number not valid!\n" RESET),
 			1);
 	if (!is_valid_arg(ac, av))
-		return (printf(RED "Error : An or More Arguments not valid!\n" RESET),
+		return (printf(RED "Error : An or More Arguments not valid\n" RESET),
 			1);
 	memset(&data, 0, sizeof(t_data));
 	init_data(&data, ac, av);
