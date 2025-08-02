@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simulation_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouknan <abouknan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macbookpro <macbookpro@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/18 19:21:18 by abouknan          #+#    #+#             */
-/*   Updated: 2025/07/31 06:46:12 by abouknan         ###   ########.fr       */
+/*   Updated: 2025/08/02 15:45:19 by macbookpro       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	one_philo(t_philo *philo)
 	sem_wait(data->forks);
 	safe_print(philo, "has taken a fork");
 	ft_usleep(data, data->time_to_die);
+	safe_print(philo, "died");
 	sem_post(data->forks);
 	exit(EXIT_FAILURE);
 }
